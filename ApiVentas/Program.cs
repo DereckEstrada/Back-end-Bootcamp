@@ -9,13 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IBodega, BodegaServices>();
-builder.Services.AddScoped<ICategoria, CategoriaServices>();
-builder.Services.AddScoped<ICiudad, CiudadServices>();
+builder.Services.AddScoped<IBodega, BodegaService>();
+builder.Services.AddScoped<ICategoria, CategoriaService>();
+builder.Services.AddScoped<ICiudad, CiudadService>();
 builder.Services.AddScoped<ICliente, ClienteServices>();
-builder.Services.AddScoped<IEmpresa, EmpresaServices>();
-builder.Services.AddScoped<IFormaPago, FormaPagoServices>();
-builder.Services.AddScoped<IIndustria, IndustriaServices>();
+builder.Services.AddScoped<IEmpresa, EmpresaService>();
+builder.Services.AddScoped<IFormaPago, FormaPagoService>();
+builder.Services.AddScoped<IIndustria, IndustriaService>();
 
 builder.Services.AddDbContext<BaseErpContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionDefault")));
