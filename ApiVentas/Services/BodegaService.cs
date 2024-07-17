@@ -2,15 +2,18 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ApiVentas.Services
 {
-    public class BodegaServices : IBodega
+    public class BodegaService : IBodega
     {
         private readonly BaseErpContext _context;
-        private ControlError Log = new ControlError();
+        private readonly ControlError Log = new ControlError();
 
-        public BodegaServices(BaseErpContext context)
+        public BodegaService(BaseErpContext context)
         {
             this._context = context;
         }
@@ -29,7 +32,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("BodegaServices", "GetBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaService", "GetBodega", ex.Message);
             }
 
             return respuesta;
@@ -40,8 +43,9 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var query = _context.Bodegas.OrderByDescending(x => x.BodegaId).Select(x => x.BodegaId).FirstOrDefault();
-                bodega.BodegaId = Convert.ToInt32(query) + 1;
+                var query = await _context.Bodegas.OrderByDescending(x => x.BodegaId).Select(x => x.BodegaId).FirstOrDefaultAsync();
+                bodega.BodegaId = query == 0 ? 1 : query + 1;
+                bodega.FechaHoraReg = DateTime.Now;
 
                 _context.Bodegas.Add(bodega);
                 await _context.SaveChangesAsync();
@@ -53,7 +57,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("BodegaServices", "PostBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaService", "PostBodega", ex.Message);
             }
             return respuesta;
         }
@@ -63,12 +67,12 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var existingBodega = await _context.Bodegas.FindAsync(bodega.BodegaId);
-                if (existingBodega != null)
+                bool existingBodega = await _context.Bodegas.AnyAsync(x => x.BodegaId == bodega.BodegaId);
+                if (existingBodega)
                 {
-                    _context.Entry(existingBodega).CurrentValues.SetValues(bodega);
-                    _context.Entry(existingBodega).State = EntityState.Modified;
+                    bodega.FechaHoraAct = DateTime.Now;
 
+                    _context.Bodegas.Update(bodega);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -84,7 +88,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("BodegaServices", "PutBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaService", "PutBodega", ex.Message);
             }
             return respuesta;
         }
@@ -94,14 +98,13 @@ namespace ApiVentas.Services
             Respuesta respuesta = new Respuesta();
             try
             {
-                var existingBodega = await _context.Bodegas.FindAsync(bodega.BodegaId);
-
-                if (existingBodega != null)
+                bool existingBodega = await _context.Bodegas.AnyAsync(x => x.BodegaId == bodega.BodegaId);
+                if (existingBodega)
                 {
-                    _context.Entry(existingBodega).CurrentValues.SetValues(bodega);
-                    _context.Entry(existingBodega).State = EntityState.Modified;
+                    bodega.FechaHoraAct = DateTime.Now;
 
                     bodega.Estado = 0;
+                    _context.Bodegas.Update(bodega);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -117,7 +120,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("BodegaServices", "DeleteBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaService", "DeleteBodega", ex.Message);
             }
             return respuesta;
         }

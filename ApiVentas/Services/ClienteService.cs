@@ -2,6 +2,7 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace ApiVentas.Services
 {
@@ -41,7 +42,8 @@ namespace ApiVentas.Services
             try
             {
                 var query = _context.Clientes.OrderByDescending(x => x.ClienteId).Select(x => x.ClienteId).FirstOrDefault();
-                cliente.ClienteId = Convert.ToInt32(query) + 1;
+                cliente.ClienteId = query == 0 ? 1 : Convert.ToInt32(query) + 1;
+                cliente.FechaHoraReg = DateTime.Now;
 
                 _context.Clientes.Add(cliente);
                 await _context.SaveChangesAsync();
@@ -58,17 +60,21 @@ namespace ApiVentas.Services
             return respuesta;
         }
 
+
         public async Task<Respuesta> PutCliente(Cliente cliente)
         {
             var respuesta = new Respuesta();
             try
             {
-                var existingCliente = await _context.Clientes.FindAsync(cliente.ClienteId);
-                if (existingCliente != null)
+                bool existingCliente = await _context.Clientes.AnyAsync();
+                if (existingCliente)
                 {
-                    _context.Entry(existingCliente).CurrentValues.SetValues(cliente);
-                    _context.Entry(existingCliente).State = EntityState.Modified;
 
+                    var fechaActualString = DateTime.Now.ToString("dd-MM-yyyy");
+                    DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                    cliente.FechaHoraAct = fechaActualDateOnly;
+
+                    _context.Clientes.Update(cliente);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -94,14 +100,17 @@ namespace ApiVentas.Services
             Respuesta respuesta = new Respuesta();
             try
             {
-                var existingCliente = await _context.Clientes.FindAsync(cliente.ClienteId);
-
-                if (existingCliente != null)
+                bool existingCliente = await _context.Clientes.AnyAsync();
+                if (existingCliente)
                 {
-                    _context.Entry(existingCliente).CurrentValues.SetValues(cliente);
-                    _context.Entry(existingCliente).State = EntityState.Modified;
+
+                    var fechaActualString = DateTime.Now.ToString("dd-MM-yyyy");
+                    DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                    cliente.FechaHoraAct = fechaActualDateOnly;
 
                     cliente.Estado = 0;
+                    
+                    _context.Clientes.Update(cliente);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";

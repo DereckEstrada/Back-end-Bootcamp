@@ -2,15 +2,18 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ApiVentas.Services
 {
-    public class CiudadServices : ICiudad
+    public class CiudadService : ICiudad
     {
         private readonly BaseErpContext _context;
-        private ControlError Log = new ControlError();
+        private readonly ControlError Log = new ControlError();
 
-        public CiudadServices(BaseErpContext context)
+        public CiudadService(BaseErpContext context)
         {
             this._context = context;
         }
@@ -29,7 +32,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CiudadServices", "GetCiudad", ex.Message);
+                Log.LogErrorMetodos("CiudadService", "GetCiudad", ex.Message);
             }
 
             return respuesta;
@@ -40,8 +43,9 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var query = _context.Ciudads.OrderByDescending(x => x.CiudadId).Select(x => x.CiudadId).FirstOrDefault();
-                ciudad.CiudadId = Convert.ToInt32(query) + 1;
+                var query = await _context.Ciudads.OrderByDescending(x => x.CiudadId).Select(x => x.CiudadId).FirstOrDefaultAsync();
+                ciudad.CiudadId = query == 0 ? 1 : query + 1;
+                ciudad.FechaHoraReg = DateTime.Now;
 
                 _context.Ciudads.Add(ciudad);
                 await _context.SaveChangesAsync();
@@ -53,7 +57,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CiudadServices", "PostCiudad", ex.Message);
+                Log.LogErrorMetodos("CiudadService", "PostCiudad", ex.Message);
             }
             return respuesta;
         }
@@ -63,12 +67,12 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var existingCiudad = await _context.Ciudads.FindAsync(ciudad.CiudadId);
-                if (existingCiudad != null)
+                bool existingCiudad = await _context.Ciudads.AnyAsync(x => x.CiudadId == ciudad.CiudadId);
+                if (existingCiudad)
                 {
-                    _context.Entry(existingCiudad).CurrentValues.SetValues(ciudad);
-                    _context.Entry(existingCiudad).State = EntityState.Modified;
+                    ciudad.FechaHoraAct = DateTime.Now;
 
+                    _context.Ciudads.Update(ciudad);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -84,7 +88,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CiudadServices", "PutCiudad", ex.Message);
+                Log.LogErrorMetodos("CiudadService", "PutCiudad", ex.Message);
             }
             return respuesta;
         }
@@ -94,14 +98,13 @@ namespace ApiVentas.Services
             Respuesta respuesta = new Respuesta();
             try
             {
-                var existingCiudad = await _context.Ciudads.FindAsync(ciudad.CiudadId);
-
-                if (existingCiudad != null)
+                bool existingCiudad = await _context.Ciudads.AnyAsync(x => x.CiudadId == ciudad.CiudadId);
+                if (existingCiudad)
                 {
-                    _context.Entry(existingCiudad).CurrentValues.SetValues(ciudad);
-                    _context.Entry(existingCiudad).State = EntityState.Modified;
+                    ciudad.FechaHoraAct = DateTime.Now;
 
                     ciudad.Estado = 0;
+                    _context.Ciudads.Update(ciudad);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -117,7 +120,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CiudadServices", "DeleteCiudad", ex.Message);
+                Log.LogErrorMetodos("CiudadService", "DeleteCiudad", ex.Message);
             }
             return respuesta;
         }

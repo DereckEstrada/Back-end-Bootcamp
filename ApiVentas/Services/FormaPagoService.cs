@@ -3,17 +3,17 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace ApiVentas.Services
 {
-    public class FormaPagoServices : IFormaPago
+    public class FormaPagoService : IFormaPago
     {
         private readonly BaseErpContext _context;
-        private ControlError Log = new ControlError();
+        private readonly ControlError Log = new ControlError();
 
-        public FormaPagoServices(BaseErpContext context)
+        public FormaPagoService(BaseErpContext context)
         {
             this._context = context;
         }
@@ -32,7 +32,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("FormaPagoServices", "GetFormaPago", ex.Message);
+                Log.LogErrorMetodos("FormaPagoService", "GetFormaPago", ex.Message);
             }
 
             return respuesta;
@@ -43,8 +43,9 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var query = _context.FormaPagos.OrderByDescending(x => x.FpagoId).Select(x => x.FpagoId).FirstOrDefault();
-                formaPago.FpagoId = Convert.ToInt32(query) + 1;
+                var query = await _context.FormaPagos.OrderByDescending(x => x.FpagoId).Select(x => x.FpagoId).FirstOrDefaultAsync();
+                formaPago.FpagoId = query == 0 ? 1 : query + 1;
+                formaPago.FechaHoraReg = DateTime.Now;
 
                 _context.FormaPagos.Add(formaPago);
                 await _context.SaveChangesAsync();
@@ -56,7 +57,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("FormaPagoServices", "PostFormaPago", ex.Message);
+                Log.LogErrorMetodos("FormaPagoService", "PostFormaPago", ex.Message);
             }
             return respuesta;
         }
@@ -66,12 +67,14 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var existingFormaPago = await _context.FormaPagos.FindAsync(formaPago.FpagoId);
-                if (existingFormaPago != null)
+                bool existingFormaPago = await _context.FormaPagos.AnyAsync(x => x.FpagoId == formaPago.FpagoId);
+                if (existingFormaPago)
                 {
-                    _context.Entry(existingFormaPago).CurrentValues.SetValues(formaPago);
-                    _context.Entry(existingFormaPago).State = EntityState.Modified;
+                    var fechaActualString = DateTime.Now.ToString("dd-MM-yyyy");
+                    DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                    formaPago.FechaHoraAct = DateTime.Now;
 
+                    _context.FormaPagos.Update(formaPago);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -87,7 +90,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("FormaPagoServices", "PutFormaPago", ex.Message);
+                Log.LogErrorMetodos("FormaPagoService", "PutFormaPago", ex.Message);
             }
             return respuesta;
         }
@@ -97,14 +100,15 @@ namespace ApiVentas.Services
             Respuesta respuesta = new Respuesta();
             try
             {
-                var existingFormaPago = await _context.FormaPagos.FindAsync(formaPago.FpagoId);
-
-                if (existingFormaPago != null)
+                bool existingFormaPago = await _context.FormaPagos.AnyAsync(x => x.FpagoId == formaPago.FpagoId);
+                if (existingFormaPago)
                 {
-                    _context.Entry(existingFormaPago).CurrentValues.SetValues(formaPago);
-                    _context.Entry(existingFormaPago).State = EntityState.Modified;
+                    var fechaActualString = DateTime.Now.ToString("dd-MM-yyyy");
+                    DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                    formaPago.FechaHoraAct = DateTime.Now;
 
                     formaPago.Estado = 0;
+                    _context.FormaPagos.Update(formaPago);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -120,7 +124,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("FormaPagoServices", "DeleteFormaPago", ex.Message);
+                Log.LogErrorMetodos("FormaPagoService", "DeleteFormaPago", ex.Message);
             }
             return respuesta;
         }

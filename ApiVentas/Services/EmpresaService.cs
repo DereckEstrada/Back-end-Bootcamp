@@ -2,15 +2,18 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ApiVentas.Services
 {
-    public class EmpresaServices : IEmpresa
+    public class EmpresaService : IEmpresa
     {
         private readonly BaseErpContext _context;
-        private ControlError Log = new ControlError();
+        private readonly ControlError Log = new ControlError();
 
-        public EmpresaServices(BaseErpContext context)
+        public EmpresaService(BaseErpContext context)
         {
             this._context = context;
         }
@@ -29,7 +32,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("EmpresaServices", "GetEmpresa", ex.Message);
+                Log.LogErrorMetodos("EmpresaService", "GetEmpresa", ex.Message);
             }
 
             return respuesta;
@@ -40,8 +43,9 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var query = _context.Empresas.OrderByDescending(x => x.EmpresaId).Select(x => x.EmpresaId).FirstOrDefault();
-                empresa.EmpresaId = Convert.ToInt32(query) + 1;
+                var query = await _context.Empresas.OrderByDescending(x => x.EmpresaId).Select(x => x.EmpresaId).FirstOrDefaultAsync();
+                empresa.EmpresaId = query == 0 ? 1 : query + 1;
+                empresa.FechaHoraReg = DateTime.Now;
 
                 _context.Empresas.Add(empresa);
                 await _context.SaveChangesAsync();
@@ -53,7 +57,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("EmpresaServices", "PostEmpresa", ex.Message);
+                Log.LogErrorMetodos("EmpresaService", "PostEmpresa", ex.Message);
             }
             return respuesta;
         }
@@ -63,12 +67,12 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var existingEmpresa = await _context.Empresas.FindAsync(empresa.EmpresaId);
-                if (existingEmpresa != null)
+                bool existingEmpresa = await _context.Empresas.AnyAsync(x => x.EmpresaId == empresa.EmpresaId);
+                if (existingEmpresa)
                 {
-                    _context.Entry(existingEmpresa).CurrentValues.SetValues(empresa);
-                    _context.Entry(existingEmpresa).State = EntityState.Modified;
+                    empresa.FechaHoraAct = DateTime.Now;
 
+                    _context.Empresas.Update(empresa);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -84,7 +88,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("EmpresaServices", "PutEmpresa", ex.Message);
+                Log.LogErrorMetodos("EmpresaService", "PutEmpresa", ex.Message);
             }
             return respuesta;
         }
@@ -94,14 +98,13 @@ namespace ApiVentas.Services
             Respuesta respuesta = new Respuesta();
             try
             {
-                var existingEmpresa = await _context.Empresas.FindAsync(empresa.EmpresaId);
-
-                if (existingEmpresa != null)
+                bool existingEmpresa = await _context.Empresas.AnyAsync(x => x.EmpresaId == empresa.EmpresaId);
+                if (existingEmpresa)
                 {
-                    _context.Entry(existingEmpresa).CurrentValues.SetValues(empresa);
-                    _context.Entry(existingEmpresa).State = EntityState.Modified;
+                    empresa.FechaHoraAct = DateTime.Now;
 
                     empresa.Estado = 0;
+                    _context.Empresas.Update(empresa);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -117,7 +120,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("EmpresaServices", "DeleteEmpresa", ex.Message);
+                Log.LogErrorMetodos("EmpresaService", "DeleteEmpresa", ex.Message);
             }
             return respuesta;
         }

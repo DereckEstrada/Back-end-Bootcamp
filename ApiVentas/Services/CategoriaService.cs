@@ -2,15 +2,18 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ApiVentas.Services
 {
-    public class CategoriaServices : ICategoria
+    public class CategoriaService : ICategoria
     {
         private readonly BaseErpContext _context;
-        private ControlError Log = new ControlError();
+        private readonly ControlError Log = new ControlError();
 
-        public CategoriaServices(BaseErpContext context)
+        public CategoriaService(BaseErpContext context)
         {
             this._context = context;
         }
@@ -29,7 +32,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CategoriaServices", "GetCategoria", ex.Message);
+                Log.LogErrorMetodos("CategoriaService", "GetCategoria", ex.Message);
             }
 
             return respuesta;
@@ -40,8 +43,9 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var query = _context.Categoria.OrderByDescending(x => x.CategoriaId).Select(x => x.CategoriaId).FirstOrDefault();
-                categoria.CategoriaId = Convert.ToInt32(query) + 1;
+                var query = await _context.Categoria.OrderByDescending(x => x.CategoriaId).Select(x => x.CategoriaId).FirstOrDefaultAsync();
+                categoria.CategoriaId = query == 0 ? 1 : query + 1;
+                categoria.FechaHoraReg = DateTime.Now;
 
                 _context.Categoria.Add(categoria);
                 await _context.SaveChangesAsync();
@@ -53,7 +57,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CategoriaServices", "PostCategoria", ex.Message);
+                Log.LogErrorMetodos("CategoriaService", "PostCategoria", ex.Message);
             }
             return respuesta;
         }
@@ -63,12 +67,12 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var existingCategoria = await _context.Categoria.FindAsync(categoria.CategoriaId);
-                if (existingCategoria != null)
+                bool existingCategoria = await _context.Categoria.AnyAsync(x => x.CategoriaId == categoria.CategoriaId);
+                if (existingCategoria)
                 {
-                    _context.Entry(existingCategoria).CurrentValues.SetValues(categoria);
-                    _context.Entry(existingCategoria).State = EntityState.Modified;
+                    categoria.FechaHoraAct = DateTime.Now;
 
+                    _context.Categoria.Update(categoria);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -84,7 +88,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CategoriaServices", "PutCategoria", ex.Message);
+                Log.LogErrorMetodos("CategoriaService", "PutCategoria", ex.Message);
             }
             return respuesta;
         }
@@ -94,14 +98,13 @@ namespace ApiVentas.Services
             Respuesta respuesta = new Respuesta();
             try
             {
-                var existingCategoria = await _context.Categoria.FindAsync(categoria.CategoriaId);
-
-                if (existingCategoria != null)
+                bool existingCategoria = await _context.Categoria.AnyAsync(x => x.CategoriaId == categoria.CategoriaId);
+                if (existingCategoria)
                 {
-                    _context.Entry(existingCategoria).CurrentValues.SetValues(categoria);
-                    _context.Entry(existingCategoria).State = EntityState.Modified;
+                    categoria.FechaHoraAct = DateTime.Now;
 
                     categoria.Estado = 0;
+                    _context.Categoria.Update(categoria);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -117,7 +120,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CategoriaServices", "DeleteCategoria", ex.Message);
+                Log.LogErrorMetodos("CategoriaService", "DeleteCategoria", ex.Message);
             }
             return respuesta;
         }

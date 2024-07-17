@@ -3,17 +3,17 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace ApiVentas.Services
 {
-    public class IndustriaServices : IIndustria
+    public class IndustriaService : IIndustria
     {
         private readonly BaseErpContext _context;
         private readonly ControlError Log = new ControlError();
 
-        public IndustriaServices(BaseErpContext context)
+        public IndustriaService(BaseErpContext context)
         {
             this._context = context;
         }
@@ -31,8 +31,8 @@ namespace ApiVentas.Services
             catch (Exception ex)
             {
                 respuesta.Cod = "999";
-                respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("IndustriaServices", "GetIndustria", ex.Message);
+                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos("IndustriaService", "GetIndustria", ex.Message);
             }
 
             return respuesta;
@@ -43,8 +43,9 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var query = _context.Industria.OrderByDescending(x => x.IndustriaId).Select(x => x.IndustriaId).FirstOrDefault();
-                industria.IndustriaId = Convert.ToInt32(query) + 1;
+                var query = await _context.Industria.OrderByDescending(x => x.IndustriaId).Select(x => x.IndustriaId).FirstOrDefaultAsync();
+                industria.IndustriaId = query == 0 ? 1 : query + 1;
+                industria.FechaHoraReg = DateTime.Now;
 
                 _context.Industria.Add(industria);
                 await _context.SaveChangesAsync();
@@ -55,8 +56,8 @@ namespace ApiVentas.Services
             catch (Exception ex)
             {
                 respuesta.Cod = "999";
-                respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("IndustriaServices", "PostIndustria", ex.Message);
+                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos("IndustriaService", "PostIndustria", ex.Message);
             }
             return respuesta;
         }
@@ -66,12 +67,12 @@ namespace ApiVentas.Services
             var respuesta = new Respuesta();
             try
             {
-                var existingIndustria = await _context.Industria.FindAsync(industria.IndustriaId);
-                if (existingIndustria != null)
+                bool existingIndustria = await _context.Industria.AnyAsync(x => x.IndustriaId == industria.IndustriaId);
+                if (existingIndustria)
                 {
-                    _context.Entry(existingIndustria).CurrentValues.SetValues(industria);
-                    _context.Entry(existingIndustria).State = EntityState.Modified;
+                    industria.FechaHoraAct = DateTime.Now;
 
+                    _context.Industria.Update(industria);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -86,8 +87,8 @@ namespace ApiVentas.Services
             catch (Exception ex)
             {
                 respuesta.Cod = "999";
-                respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("IndustriaServices", "PutIndustria", ex.Message);
+                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos("IndustriaService", "PutIndustria", ex.Message);
             }
             return respuesta;
         }
@@ -97,14 +98,13 @@ namespace ApiVentas.Services
             Respuesta respuesta = new Respuesta();
             try
             {
-                var existingIndustrium = await _context.Industria.FindAsync(industria.IndustriaId);
-
-                if (existingIndustrium != null)
+                bool existingIndustria = await _context.Industria.AnyAsync(x => x.IndustriaId == industria.IndustriaId);
+                if (existingIndustria)
                 {
-                    _context.Entry(existingIndustrium).CurrentValues.SetValues(industria);
-                    _context.Entry(existingIndustrium).State = EntityState.Modified;
+                    industria.FechaHoraAct = DateTime.Now;
 
                     industria.Estado = 0;
+                    _context.Industria.Update(industria);
                     await _context.SaveChangesAsync();
 
                     respuesta.Cod = "000";
@@ -120,7 +120,7 @@ namespace ApiVentas.Services
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("IndustriaServices", "DeleteIndustria", ex.Message);
+                Log.LogErrorMetodos("IndustriaService", "DeleteIndustria", ex.Message);
             }
             return respuesta;
         }
