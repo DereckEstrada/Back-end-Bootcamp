@@ -4,3 +4,5 @@
 
 /ApiVentas/bin/Debug/net8.0
 /ApiVentas/obj/Debug/net8.0
+/.vs/ApiVentas
+*.user
