@@ -3,6 +3,7 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using ApiVentas.DTOs;
 
 namespace ApiVentas.Services
 {
@@ -16,14 +17,63 @@ namespace ApiVentas.Services
             this._context = context;
         }
 
-        public async Task<Respuesta> GetCliente()
+        public async Task<Respuesta> GetCliente(double clienteID, string? clienteNombre, double cedula)
         {
             var respuesta = new Respuesta();
-
             try
             {
+                var query = from cl in _context.Clientes
+                            where cl.Estado == 1
+                            select new ClienteDto
+                            {
+                                ClienteID = cl.ClienteId,
+                                CliRuc = cl.ClienteRuc,
+                                CliNombre1 = cl.ClienteNombre1,
+                                CliNombre2 = cl.ClienteNombre2,
+                                CliApellido1 = cl.ClienteApellido1,
+                                CliApellido2 = cl.ClienteApellido2,
+                                CliEmail = cl.ClienteEmail,
+                                CliTel = cl.ClienteTelefono,
+                                CliDir = cl.ClienteDireccion,
+                                Estado = cl.Estado,
+                                FecHoraReg = cl.FechaHoraReg,
+                                FecHoraAct = cl.FechaHoraAct
+                            };
+
+                if (clienteID != 0 && !string.IsNullOrEmpty(clienteNombre) && cedula != 0)
+                {
+                    respuesta.Data = await query.Where(cl => cl.ClienteID == clienteID && cl.CliNombre1.Contains(clienteNombre) && cl.CliRuc == cedula.ToString()).ToListAsync();
+                }
+                else if (clienteID != 0 && !string.IsNullOrEmpty(clienteNombre))
+                {
+                    respuesta.Data = await query.Where(cl => cl.ClienteID == clienteID && cl.CliNombre1.Contains(clienteNombre)).ToListAsync();
+                }
+                else if (clienteID != 0 && cedula != 0)
+                {
+                    respuesta.Data = await query.Where(cl => cl.ClienteID == clienteID && cl.CliRuc == cedula.ToString()).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(clienteNombre) && cedula != 0)
+                {
+                    respuesta.Data = await query.Where(cl => cl.CliNombre1.Contains(clienteNombre) && cl.CliRuc == cedula.ToString()).ToListAsync();
+                }
+                else if (clienteID != 0)
+                {
+                    respuesta.Data = await query.Where(cl => cl.ClienteID == clienteID).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(clienteNombre))
+                {
+                    respuesta.Data = await query.Where(cl => cl.CliNombre1.Contains(clienteNombre)).ToListAsync();
+                }
+                else if (cedula != 0)
+                {
+                    respuesta.Data = await query.Where(cl => cl.CliRuc == cedula.ToString()).ToListAsync();
+                }
+                else
+                {
+                    respuesta.Data = await query.ToListAsync();
+                }
+
                 respuesta.Cod = "000";
-                respuesta.Data = await _context.Clientes.ToListAsync();
                 respuesta.Mensaje = "OK";
             }
             catch (Exception ex)
@@ -35,6 +85,7 @@ namespace ApiVentas.Services
 
             return respuesta;
         }
+
 
         public async Task<Respuesta> PostCliente(Cliente cliente)
         {

@@ -1,4 +1,5 @@
-﻿using ApiVentas.Interfaces;
+﻿using ApiVentas.DTOs;
+using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
@@ -18,25 +19,75 @@ namespace ApiVentas.Services
             this._context = context;
         }
 
-        public async Task<Respuesta> GetCiudad()
+        public async Task<Respuesta> GetCiudad(int ciudadID, string? ciudadNombre, int? paisID)
         {
             var respuesta = new Respuesta();
-
             try
             {
+                var query = from ciu in _context.Ciudads
+                            join pais in _context.Pais on ciu.PaisId equals pais.PaisId
+                            where ciu.Estado == 1
+                            select new CiudadDto
+                            {
+                                CiudadID = ciu.CiudadId,
+                                CiuNombre = ciu.CiudadNombre,
+                                Estado = ciu.Estado,
+                                FechaHoraReg = ciu.FechaHoraReg,
+                                FechaHoraAct = ciu.FechaHoraAct,
+                                PaisDescrip = pais.PaisNombre
+                            };
+
+                if (ciudadID != 0 && !string.IsNullOrEmpty(ciudadNombre) && paisID.HasValue)
+                {
+                    respuesta.Data = await query.Where(ciu => ciu.CiudadID == ciudadID
+                                                            && ciu.CiuNombre.Contains(ciudadNombre)
+                                                            && ciu.PaisDescrip.Contains(paisID.ToString())).ToListAsync();
+                }
+                else if (ciudadID != 0 && !string.IsNullOrEmpty(ciudadNombre))
+                {
+                    respuesta.Data = await query.Where(ciu => ciu.CiudadID == ciudadID
+                                                            && ciu.CiuNombre.Contains(ciudadNombre)).ToListAsync();
+                }
+                else if (ciudadID != 0 && paisID.HasValue)
+                {
+                    respuesta.Data = await query.Where(ciu => ciu.CiudadID == ciudadID
+                                                            && ciu.PaisDescrip.Contains(paisID.ToString())).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(ciudadNombre) && paisID.HasValue)
+                {
+                    respuesta.Data = await query.Where(ciu => ciu.CiuNombre.Contains(ciudadNombre)
+                                                            && ciu.PaisDescrip.Contains(paisID.ToString())).ToListAsync();
+                }
+                else if (ciudadID != 0)
+                {
+                    respuesta.Data = await query.Where(ciu => ciu.CiudadID == ciudadID).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(ciudadNombre))
+                {
+                    respuesta.Data = await query.Where(ciu => ciu.CiuNombre.Contains(ciudadNombre)).ToListAsync();
+                }
+                else if (paisID.HasValue)
+                {
+                    respuesta.Data = await query.Where(ciu => ciu.PaisDescrip.Contains(paisID.ToString())).ToListAsync();
+                }
+                else
+                {
+                    respuesta.Data = await query.ToListAsync();
+                }
+
                 respuesta.Cod = "000";
-                respuesta.Data = await _context.Ciudads.ToListAsync();
                 respuesta.Mensaje = "OK";
             }
             catch (Exception ex)
             {
                 respuesta.Cod = "999";
                 respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("CiudadService", "GetCiudad", ex.Message);
+                Log.LogErrorMetodos("CiudadServices", "GetCiudad", ex.Message);
             }
 
             return respuesta;
         }
+
 
         public async Task<Respuesta> PostCiudad(Ciudad ciudad)
         {

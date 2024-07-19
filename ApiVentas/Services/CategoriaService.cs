@@ -1,4 +1,5 @@
-﻿using ApiVentas.Interfaces;
+﻿using ApiVentas.DTOs;
+using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,40 @@ namespace ApiVentas.Services
             this._context = context;
         }
 
-        public async Task<Respuesta> GetCategoria()
+        public async Task<Respuesta> GetCategoria(int categoriaID, string? categoriaDescripcion)
         {
             var respuesta = new Respuesta();
-
             try
             {
+                var query = from c in _context.Categoria
+                            where c.Estado == 1
+                            select new CategoriaDto
+                            {
+                                CategoriaID = c.CategoriaId,
+                                CategDescrip = c.CategoriaDescrip,
+                                Estado = c.Estado,
+                                FecHoraReg = c.FechaHoraReg,
+                                FecHoraAct = c.FechaHoraAct
+                            };
+
+                if (categoriaID != 0 && !string.IsNullOrEmpty(categoriaDescripcion))
+                {
+                    respuesta.Data = await query.Where(c => c.CategoriaID == categoriaID && c.CategDescrip.Contains(categoriaDescripcion)).ToListAsync();
+                }
+                else if (categoriaID != 0)
+                {
+                    respuesta.Data = await query.Where(c => c.CategoriaID == categoriaID).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(categoriaDescripcion))
+                {
+                    respuesta.Data = await query.Where(c => c.CategDescrip.Contains(categoriaDescripcion)).ToListAsync();
+                }
+                else
+                {
+                    respuesta.Data = await query.ToListAsync();
+                }
+
                 respuesta.Cod = "000";
-                respuesta.Data = await _context.Categoria.ToListAsync();
                 respuesta.Mensaje = "OK";
             }
             catch (Exception ex)
@@ -37,6 +64,7 @@ namespace ApiVentas.Services
 
             return respuesta;
         }
+
 
         public async Task<Respuesta> PostCategoria(Categorium categoria)
         {

@@ -1,4 +1,5 @@
-﻿using ApiVentas.Interfaces;
+﻿using ApiVentas.DTOs;
+using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,60 @@ namespace ApiVentas.Services
             this._context = context;
         }
 
-        public async Task<Respuesta> GetBodega()
+        public async Task<Respuesta> GetBodega(int bodegaID, string? bodegaNombre, string? bodegaTelefono)
         {
             var respuesta = new Respuesta();
-
             try
             {
+                var query = (from b in _context.Bodegas
+                             join suc in _context.Sucursals on b.SucursalId equals suc.SucursalId
+                             where b.Estado == 1
+                             select new BodegaDto
+                             {
+                                 BodegaID = b.BodegaId,
+                                 BodNombre = b.BodegaNombre,
+                                 BodDir = b.BodegaDireccion,
+                                 BodTel = b.BodegaTelefono,
+                                 Estado = b.Estado,
+                                 FecHoraReg = b.FechaHoraReg,
+                                 FecHoraAct = b.FechaHoraAct,
+                                 SucursalDescrip = suc.SucursalNombre 
+                             });
+
+                if (bodegaID != 0 && !string.IsNullOrEmpty(bodegaNombre) && !string.IsNullOrEmpty(bodegaTelefono))
+                {
+                    respuesta.Data = await query.Where(b => b.BodegaID == bodegaID && b.BodNombre.Contains(bodegaNombre) && b.BodTel.Contains(bodegaTelefono)).ToListAsync();
+                }
+                else if (bodegaID != 0 && !string.IsNullOrEmpty(bodegaNombre))
+                {
+                    respuesta.Data = await query.Where(b => b.BodegaID == bodegaID && b.BodNombre.Contains(bodegaNombre)).ToListAsync();
+                }
+                else if (bodegaID != 0 && !string.IsNullOrEmpty(bodegaTelefono))
+                {
+                    respuesta.Data = await query.Where(b => b.BodegaID == bodegaID && b.BodTel.Contains(bodegaTelefono)).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(bodegaNombre) && !string.IsNullOrEmpty(bodegaTelefono))
+                {
+                    respuesta.Data = await query.Where(b => b.BodNombre.Contains(bodegaNombre) && b.BodTel.Contains(bodegaTelefono)).ToListAsync();
+                }
+                else if (bodegaID != 0)
+                {
+                    respuesta.Data = await query.Where(b => b.BodegaID == bodegaID).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(bodegaNombre))
+                {
+                    respuesta.Data = await query.Where(b => b.BodNombre.Contains(bodegaNombre)).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(bodegaTelefono))
+                {
+                    respuesta.Data = await query.Where(b => b.BodTel.Contains(bodegaTelefono)).ToListAsync();
+                }
+                else
+                {
+                    respuesta.Data = await query.ToListAsync();
+                }
+
                 respuesta.Cod = "000";
-                respuesta.Data = await _context.Bodegas.ToListAsync();
                 respuesta.Mensaje = "OK";
             }
             catch (Exception ex)
@@ -37,6 +84,8 @@ namespace ApiVentas.Services
 
             return respuesta;
         }
+
+
 
         public async Task<Respuesta> PostBodega(Bodega bodega)
         {

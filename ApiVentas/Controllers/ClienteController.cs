@@ -18,12 +18,12 @@ namespace ApiVentas.Controllers
 
         [HttpGet]
         [Route("GetCliente")]
-        public async Task<Respuesta> GetCliente()
+        public async Task<Respuesta> GetCliente(double clienteID, string? clienteNombre, double cedula)
         {
             var respuesta = new Respuesta();
             try
             {
-                respuesta = await _cliente.GetCliente();
+                respuesta = await _cliente.GetCliente(clienteID, clienteNombre, cedula);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using ApiVentas.Interfaces;
+﻿using ApiVentas.DTOs;
+using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
@@ -18,34 +19,60 @@ namespace ApiVentas.Services
             this._context = context;
         }
 
-        public async Task<Respuesta> GetIndustria()
+        public async Task<Respuesta> GetIndustria(int industriaID, string? industriaDescripcion)
         {
             var respuesta = new Respuesta();
-
             try
             {
+                var query = from ind in _context.Industria
+                            where ind.Estado == 1
+                            select new IndustriaDto
+                            {
+                                IndustriaID = ind.IndustriaId,
+                                IndustriaDescrip = ind.IndustriaDescripcion,
+                                Estado = ind.Estado,
+                                FecHoraReg = ind.FechaHoraReg,
+                                FecHoraAct = ind.FechaHoraAct
+                            };
+
+                if (industriaID != 0 && !string.IsNullOrEmpty(industriaDescripcion))
+                {
+                    respuesta.Data = await query.Where(ind => ind.IndustriaID == industriaID
+                                                              && ind.IndustriaDescrip.Contains(industriaDescripcion)).ToListAsync();
+                }
+                else if (industriaID != 0)
+                {
+                    respuesta.Data = await query.Where(ind => ind.IndustriaID == industriaID).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(industriaDescripcion))
+                {
+                    respuesta.Data = await query.Where(ind => ind.IndustriaDescrip.Contains(industriaDescripcion)).ToListAsync();
+                }
+                else
+                {
+                    respuesta.Data = await query.ToListAsync();
+                }
+
                 respuesta.Cod = "000";
-                respuesta.Data = await _context.Industria.ToListAsync();
                 respuesta.Mensaje = "OK";
             }
             catch (Exception ex)
             {
                 respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("IndustriaService", "GetIndustria", ex.Message);
+                respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos("IndustriumServices", "GetIndustria", ex.Message);
             }
 
             return respuesta;
         }
+
 
         public async Task<Respuesta> PostIndustria(Industrium industria)
         {
             var respuesta = new Respuesta();
             try
             {
-                var query = await _context.Industria.OrderByDescending(x => x.IndustriaId).Select(x => x.IndustriaId).FirstOrDefaultAsync();
-                industria.IndustriaId = query == 0 ? 1 : query + 1;
-                industria.FechaHoraReg = DateTime.Now;
+               industria.FechaHoraReg = DateTime.Now;
 
                 _context.Industria.Add(industria);
                 await _context.SaveChangesAsync();

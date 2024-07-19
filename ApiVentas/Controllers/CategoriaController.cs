@@ -19,12 +19,12 @@ namespace ApiVentas.Controllers
 
         [HttpGet]
         [Route("GetCategoria")]
-        public async Task<Respuesta> GetCategoria()
+        public async Task<Respuesta> GetCategoria(int categoriaID, string? categoriaDescripcion)
         {
             var respuesta = new Respuesta();
             try
             {
-                respuesta = await _categoria.GetCategoria();
+                respuesta = await _categoria.GetCategoria(categoriaID, categoriaDescripcion);
             }
             catch (Exception ex)
             {

@@ -19,12 +19,12 @@ namespace ApiVentas.Controllers
 
         [HttpGet]
         [Route("GetFormaPago")]
-        public async Task<Respuesta> GetFormaPago()
+        public async Task<Respuesta> GetFormaPago(int fpagoID, string? fpagoDescripcion)
         {
             var respuesta = new Respuesta();
             try
             {
-                respuesta = await _formaPago.GetFormaPago();
+                respuesta = await _formaPago.GetFormaPago(fpagoID, fpagoDescripcion);
             }
             catch (Exception ex)
             {

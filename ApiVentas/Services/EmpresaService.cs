@@ -1,4 +1,5 @@
-﻿using ApiVentas.Interfaces;
+﻿using ApiVentas.DTOs;
+using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
@@ -18,25 +19,86 @@ namespace ApiVentas.Services
             this._context = context;
         }
 
-        public async Task<Respuesta> GetEmpresa()
+        public async Task<Respuesta> GetEmpresa(int empresaID, string? empresaNombre, string? ruc, int? ciudadID)
         {
             var respuesta = new Respuesta();
-
             try
             {
+                var query = from emp in _context.Empresas
+                            join ciu in _context.Ciudads on emp.CiudadId equals ciu.CiudadId
+                            where emp.Estado == 1
+                            select new EmpresaDto
+                            {
+                                EmpID = emp.EmpresaId,
+                                EmpRuc = emp.EmpresaRuc,
+                                EmpNombre = emp.EmpresaNombre,
+                                EmpRazon = emp.EmpresaRazon,
+                                EmpDirMatriz = emp.EmpresaDireccionMatriz,
+                                EmpTelMatriz = emp.EmpresaTelefonoMatriz,
+                                CiudadDescrip = ciu.CiudadNombre,
+                                Estado = emp.Estado,
+                                FecHoraReg = emp.FechaHoraReg,
+                                FecHoraAct = emp.FechaHoraAct
+                            };
+
+                if (empresaID != 0 && !string.IsNullOrEmpty(empresaNombre) && !string.IsNullOrEmpty(ruc) && ciudadID.HasValue)
+                {
+                    respuesta.Data = await query.Where(emp => emp.EmpID == empresaID
+                                                            && emp.EmpNombre.Contains(empresaNombre)
+                                                            && emp.EmpRuc.Contains(ruc)
+                                                            && emp.CiudadDescrip.Contains(ciudadID.ToString())).ToListAsync();
+                }
+                else if (empresaID != 0 && !string.IsNullOrEmpty(empresaNombre) && !string.IsNullOrEmpty(ruc))
+                {
+                    respuesta.Data = await query.Where(emp => emp.EmpID == empresaID
+                                                            && emp.EmpNombre.Contains(empresaNombre)
+                                                            && emp.EmpRuc.Contains(ruc)).ToListAsync();
+                }
+                else if (empresaID != 0 && ciudadID.HasValue)
+                {
+                    respuesta.Data = await query.Where(emp => emp.EmpID == empresaID
+                                                            && emp.CiudadDescrip.Contains(ciudadID.ToString())).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(empresaNombre) && ciudadID.HasValue)
+                {
+                    respuesta.Data = await query.Where(emp => emp.EmpNombre.Contains(empresaNombre)
+                                                            && emp.CiudadDescrip.Contains(ciudadID.ToString())).ToListAsync();
+                }
+                else if (empresaID != 0)
+                {
+                    respuesta.Data = await query.Where(emp => emp.EmpID == empresaID).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(empresaNombre))
+                {
+                    respuesta.Data = await query.Where(emp => emp.EmpNombre.Contains(empresaNombre)).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(ruc))
+                {
+                    respuesta.Data = await query.Where(emp => emp.EmpRuc.Contains(ruc)).ToListAsync();
+                }
+                else if (ciudadID.HasValue)
+                {
+                    respuesta.Data = await query.Where(emp => emp.CiudadDescrip.Contains(ciudadID.ToString())).ToListAsync();
+                }
+                else
+                {
+                    respuesta.Data = await query.ToListAsync();
+                }
+
                 respuesta.Cod = "000";
-                respuesta.Data = await _context.Empresas.ToListAsync();
                 respuesta.Mensaje = "OK";
             }
             catch (Exception ex)
             {
                 respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("EmpresaService", "GetEmpresa", ex.Message);
+                respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos("EmpresaServices", "GetEmpresa", ex.Message);
             }
 
             return respuesta;
         }
+
+
 
         public async Task<Respuesta> PostEmpresa(Empresa empresa)
         {

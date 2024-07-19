@@ -19,12 +19,12 @@ namespace ApiVentas.Controllers
 
         [HttpGet]
         [Route("GetBodega")]
-        public async Task<Respuesta> GetBodega()
+        public async Task<Respuesta> GetBodega(int bodegaID, string? bodegaNombre, string? bodegaTelefono)
         {
             var respuesta = new Respuesta();
             try
             {
-                respuesta = await _bodega.GetBodega();
+                respuesta = await _bodega.GetBodega(bodegaID, bodegaNombre, bodegaTelefono);
             }
             catch (Exception ex)
             {

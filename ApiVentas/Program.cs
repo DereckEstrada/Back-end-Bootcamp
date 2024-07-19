@@ -22,20 +22,6 @@ builder.Services.AddDbContext<BaseErpContext>(options =>
 
 var app = builder.Build();
 
-// Verificar la conexión a la base de datos al inicio
-try
-{
-    using (var db = new BaseErpContext())
-    {
-        db.Database.EnsureCreated();
-        Console.WriteLine("Connection to database successful!");
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Error connecting to database: {ex.Message}");
-}
-
 // Configure the HTTP request pipeline.
 
 app.UseAuthorization();

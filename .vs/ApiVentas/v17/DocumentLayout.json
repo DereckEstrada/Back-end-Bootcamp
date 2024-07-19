@@ -1,16 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\usuario\\source\\repos\\bootcamp\\apiventas\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\usuario\\source\\repos\\bootcamp\\apiventas\\services\\industriaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\services\\industriaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -18,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -27,32 +18,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Program.cs",
-              "RelativeDocumentMoniker": "ApiVentas\\Program.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Program.cs",
-              "RelativeToolTip": "ApiVentas\\Program.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABEAAAA3AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-17T23:53:33.564Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "IndustriaService.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Services\\IndustriaService.cs",
-              "RelativeDocumentMoniker": "ApiVentas\\Services\\IndustriaService.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Services\\IndustriaService.cs",
-              "RelativeToolTip": "ApiVentas\\Services\\IndustriaService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-17T23:53:22.623Z",
-              "EditorCaption": ""
             }
           ]
         }

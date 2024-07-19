@@ -1,4 +1,5 @@
-﻿using ApiVentas.Interfaces;
+﻿using ApiVentas.DTOs;
+using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
@@ -18,33 +19,59 @@ namespace ApiVentas.Services
             this._context = context;
         }
 
-        public async Task<Respuesta> GetFormaPago()
+        public async Task<Respuesta> GetFormaPago(int fpagoID, string? fpagoDescripcion)
         {
             var respuesta = new Respuesta();
-
             try
             {
+                var query = from fp in _context.FormaPagos
+                            where fp.Estado == 1
+                            select new FormaPagoDto
+                            {
+                                FpagoID = fp.FpagoId,
+                                FpagoDescrip = fp.FpagoDescripcion,
+                                Estado = fp.Estado,
+                                FecHoraReg = fp.FechaHoraReg,
+                                FecHoraAct = fp.FechaHoraAct
+                            };
+
+                if (fpagoID != 0 && !string.IsNullOrEmpty(fpagoDescripcion))
+                {
+                    respuesta.Data = await query.Where(fp => fp.FpagoID == fpagoID
+                                                            && fp.FpagoDescrip.Contains(fpagoDescripcion)).ToListAsync();
+                }
+                else if (fpagoID != 0)
+                {
+                    respuesta.Data = await query.Where(fp => fp.FpagoID == fpagoID).ToListAsync();
+                }
+                else if (!string.IsNullOrEmpty(fpagoDescripcion))
+                {
+                    respuesta.Data = await query.Where(fp => fp.FpagoDescrip.Contains(fpagoDescripcion)).ToListAsync();
+                }
+                else
+                {
+                    respuesta.Data = await query.ToListAsync();
+                }
+
                 respuesta.Cod = "000";
-                respuesta.Data = await _context.FormaPagos.ToListAsync();
                 respuesta.Mensaje = "OK";
             }
             catch (Exception ex)
             {
                 respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-                Log.LogErrorMetodos("FormaPagoService", "GetFormaPago", ex.Message);
+                respuesta.Mensaje = "Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos("FormaPagoServices", "GetFormaPago", ex.Message);
             }
 
             return respuesta;
         }
+
 
         public async Task<Respuesta> PostFormaPago(FormaPago formaPago)
         {
             var respuesta = new Respuesta();
             try
             {
-                var query = await _context.FormaPagos.OrderByDescending(x => x.FpagoId).Select(x => x.FpagoId).FirstOrDefaultAsync();
-                formaPago.FpagoId = query == 0 ? 1 : query + 1;
                 formaPago.FechaHoraReg = DateTime.Now;
 
                 _context.FormaPagos.Add(formaPago);
@@ -70,9 +97,7 @@ namespace ApiVentas.Services
                 bool existingFormaPago = await _context.FormaPagos.AnyAsync(x => x.FpagoId == formaPago.FpagoId);
                 if (existingFormaPago)
                 {
-                    var fechaActualString = DateTime.Now.ToString("dd-MM-yyyy");
-                    DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-                    formaPago.FechaHoraAct = DateTime.Now;
+                   formaPago.FechaHoraAct = DateTime.Now;
 
                     _context.FormaPagos.Update(formaPago);
                     await _context.SaveChangesAsync();

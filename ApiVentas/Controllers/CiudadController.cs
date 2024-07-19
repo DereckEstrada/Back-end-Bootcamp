@@ -19,12 +19,12 @@ namespace ApiVentas.Controllers
 
         [HttpGet]
         [Route("GetCiudad")]
-        public async Task<Respuesta> GetCiudad()
+        public async Task<Respuesta> GetCiudad(int ciudadID, string? ciudadNombre, int? paisID)
         {
             var respuesta = new Respuesta();
             try
             {
-                respuesta = await _ciudad.GetCiudad();
+                respuesta = await _ciudad.GetCiudad(ciudadID, ciudadNombre, paisID);
             }
             catch (Exception ex)
             {
