@@ -6,75 +6,79 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiVentas.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
-    public class BodegaController : ControllerBase
+    [Route("[controller]")]
+    public class BodegaController : Controller
     {
-        private readonly IBodegaServices _bodega;
-        private ControlError log = new ControlError();
-        public BodegaController(IBodegaServices bodega)
+        private readonly IBodega _bodega;
+        private ControlError Log = new ControlError();
+
+        public BodegaController(IBodega bodega)
         {
             this._bodega = bodega;
         }
+
         [HttpGet]
         [Route("GetBodega")]
-        public async Task<Respuesta> GetBodega(string? opcion, string? data)
+        public async Task<Respuesta> GetBodega(int bodegaID, string? bodegaNombre, string? bodegaTelefono)
         {
-            var result = new Respuesta();
+            var respuesta = new Respuesta();
             try
             {
-                result = await _bodega.GetBodega(opcion, data);
+                respuesta = await _bodega.GetBodega(bodegaID, bodegaNombre, bodegaTelefono);
             }
             catch (Exception ex)
             {
-                log.LogError(this.GetType().Name, "GetBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaController", "GetBodega", ex.Message);
             }
-            return result;
+            return respuesta;
         }
+
         [HttpPost]
         [Route("PostBodega")]
         public async Task<Respuesta> PostBodega([FromBody] Bodega bodega)
         {
-            var result = new Respuesta();
+            var respuesta = new Respuesta();
             try
             {
-                result = await _bodega.PostBodega(bodega);
+                respuesta = await _bodega.PostBodega(bodega);
             }
             catch (Exception ex)
             {
-                log.LogError(this.GetType().Name, "PostBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaController", "PostBodega", ex.Message);
             }
-            return result;
+            return respuesta;
         }
         [HttpPut]
         [Route("PutBodega")]
         public async Task<Respuesta> PutBodega([FromBody] Bodega bodega)
         {
-            var result = new Respuesta();
+            var respuesta = new Respuesta();
             try
             {
-                result = await _bodega.PutBodega(bodega);
+                respuesta = await _bodega.PutBodega(bodega);
             }
             catch (Exception ex)
             {
-                log.LogError(this.GetType().Name, "PutBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaController", "PutBodega", ex.Message);
             }
-            return result;
+            return respuesta;
         }
-        [HttpDelete]
+
+        [HttpPut]
         [Route("DeleteBodega")]
-        public async Task<Respuesta> DeleteBodega(int id)
+        public async Task<Respuesta> DeleteBodega([FromBody] Bodega bodega)
         {
-            var result = new Respuesta();
+            var respuesta = new Respuesta();
             try
             {
-                result = await _bodega.DeleteBodega(id);
+                respuesta = await _bodega.DeleteBodega(bodega);
             }
             catch (Exception ex)
             {
-                log.LogError(this.GetType().Name, "DeleteBodega", ex.Message);
+                Log.LogErrorMetodos("BodegaController", "DeleteBodega", ex.Message);
             }
-            return result;
+            return respuesta;
         }
     }
 }

@@ -66,7 +66,6 @@ public partial class BaseErpContext : DbContext
     public virtual DbSet<UsuarioPermiso> UsuarioPermisos { get; set; }
 
     public virtual DbSet<UsuarioRol> UsuarioRols { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Modern_Spanish_CI_AS");
