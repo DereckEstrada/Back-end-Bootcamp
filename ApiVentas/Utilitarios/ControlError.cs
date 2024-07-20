@@ -23,7 +23,7 @@ namespace ApiVentas.Utilitarios
                 writer.WriteLine($"Se presento una novedad en la clase: '{clase}', en el metodo: '{metodo}', con el siguente error: '{message}'");
                 writer.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;
