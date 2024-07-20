@@ -15,17 +15,16 @@
               if (!Directory.Exists(ruta))
                 {
                     Directory.CreateDirectory(ruta);
-                }
-
-                StreamWriter write = new StreamWriter($"{ruta}\\{archivo}", true);
-                write.WriteLine($"Se presentó una novedad en la clase: {clase}, en el método: {metodo}, con el siguiente error: {error}");
-                write.Close();
+              }
+                StreamWriter writ = new StreamWriter($"{ruta}\\{archivo}");
+                writ.WriteLine($"Se presento una novedad en la clase: {clase} en el metodo: {metodo}, con el siguiete error: {error}");
+                writ.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                StreamWriter writer=new StreamWriter($"{ruta}{archivo}", true);
-                writer.WriteLine($"Se presento una novedad en la clase: '{clase}', en el metodo: '{metodo}', con el siguente error: '{message}'");
-                writer.Close();
+
+                throw;
             }
+        }
     }
 }

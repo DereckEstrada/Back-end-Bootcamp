@@ -68,8 +68,6 @@ public partial class BaseErpContext : DbContext
     public virtual DbSet<UsuarioRol> UsuarioRols { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Modern_Spanish_CI_AS");
-
         modelBuilder.Entity<Bodega>(entity =>
         {
             entity.HasKey(e => e.BodegaId).HasName("_copy_3");
