@@ -2,6 +2,7 @@ using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Services;
 using ApiVentas.Utilitarios;
+using ejemploEntity.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,10 @@ builder.Services.AddScoped<IProductoServices, ProductoServices>();
 builder.Services.AddScoped<IProveedorServices, ProveedorServices>();
 builder.Services.AddScoped<IPuntoEmisionSriServices, PuntoEmisionSriServices>();
 builder.Services.AddScoped<IPuntoVentaServices, PuntoVentaServices>();
+builder.Services.AddScoped<IPais, PaisServices>();
+builder.Services.AddScoped<IModulo, ModuloServices>();
+builder.Services.AddScoped<IOpcion, OpcionServices>();
+builder.Services.AddScoped<IMovimiento, MovimientoServices>();
 builder.Services.AddScoped<IRolServices, RolServices>();
 builder.Services.AddScoped<IStockServices, StockServices>();
 builder.Services.AddScoped<IBodega, BodegaService>();
