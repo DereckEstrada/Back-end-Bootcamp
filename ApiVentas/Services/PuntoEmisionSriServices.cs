@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class PuntoEmisionSriServices: IPuntoEmisionSriServices, IAssemly<PuntoEmisionSri>
+    public class PuntoEmisionSriServices: IPuntoEmisionSriServices
     {
         private BaseErpContext _context;
         private PuntoEmisionSriDTO dto = new PuntoEmisionSriDTO();

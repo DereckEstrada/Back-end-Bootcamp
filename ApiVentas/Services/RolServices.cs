@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class RolServices : IRolServices, IAssemly<Rol>
+    public class RolServices : IRolServices
     {
         private BaseErpContext _context;
         private RolDTO dto = new RolDTO();

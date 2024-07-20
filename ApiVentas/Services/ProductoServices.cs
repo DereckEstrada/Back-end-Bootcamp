@@ -9,7 +9,7 @@ using System.Linq.Dynamic;
 
 namespace ApiVentas.Services
 {
-    public class ProductoServices : IProductoServices, IAssemly<Producto>
+    public class ProductoServices : IProductoServices
     {
         private BaseErpContext _context;
         private ProductoDTO dto=new ProductoDTO();

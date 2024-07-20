@@ -9,7 +9,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace ApiVentas.Services
 {
-    public class ProveedorServices: IProveedorServices, IAssemly<Proveedor>
+    public class ProveedorServices: IProveedorServices
     {
         private BaseErpContext _context;
         private ProveedorDTO dto = new ProveedorDTO();

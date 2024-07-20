@@ -8,7 +8,7 @@ using System.Reflection.Metadata;
 
 namespace ApiVentas.Services
 {
-    public class StockServices : IStockServices, IAssemly<Stock>
+    public class StockServices : IStockServices
     {
         private BaseErpContext _context;
         private StockDTO dto = new StockDTO();

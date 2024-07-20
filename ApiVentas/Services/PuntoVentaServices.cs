@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class PuntoVentaServices: IPuntoVentaServices, IAssemly<PuntoVentum>
+    public class PuntoVentaServices: IPuntoVentaServices
     {
         private BaseErpContext _context;
         private PuntoVentaDTO dto = new PuntoVentaDTO();

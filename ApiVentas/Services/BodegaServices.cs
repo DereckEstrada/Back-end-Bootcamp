@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class BodegaServices : IBodegaServices, IAssemly<Bodega>
+    public class BodegaServices : IBodegaServices
     {
         private BaseErpContext _context;
         private BodegaDTO dto = new BodegaDTO();
