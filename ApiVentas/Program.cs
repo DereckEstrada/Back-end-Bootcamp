@@ -1,6 +1,7 @@
 using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Services;
+using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+
+builder.Services.AddServices();
 builder.Services.AddScoped<IBodega, BodegaService>();
 builder.Services.AddScoped<ICategoria, CategoriaService>();
 builder.Services.AddScoped<ICiudad, CiudadService>();

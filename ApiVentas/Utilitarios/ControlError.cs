@@ -12,12 +12,10 @@
             {
                 ruta = "C:\\ApiVentas\\Logs";
                 archivo = $"Log_{fecha.ToString("dd-MM-yyyy")}";
-
                 if (!Directory.Exists(ruta))
                 {
                     Directory.CreateDirectory(ruta);
                 }
-
                 StreamWriter write = new StreamWriter($"{ruta}\\{archivo}", true);
                 write.WriteLine($"Se presentó una novedad en la clase: {clase}, en el método: {metodo}, con el siguiente error: {error}");
                 write.Close();
@@ -25,8 +23,9 @@
             }
             catch (Exception)
             {
-                throw;
+                StreamWriter writer=new StreamWriter($"{ruta}{archivo}", true);
+                writer.WriteLine($"Se presento una novedad en la clase: '{clase}', en el metodo: '{metodo}', con el siguente error: '{message}'");
+                writer.Close();
             }
-        }
     }
 }
