@@ -7,12 +7,13 @@ namespace ApiVentas.DTOs
     {
         public int RolId { get; set; }
         public string? RolDescripcion { get; set; }
-        public short? Estado { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescrip { get; set; }
         public DateTime? FechaHoraReg { get; set; }
         public DateTime? FechaHoraAct { get; set; }
         public int? UsuIdReg { get; set; }
         public string? UsuRegDescrip { get; set; }
-        public string? UsuIdAct { get; set; }
+        public int? UsuIdAct { get; set; }
         public Expression<Func<RolDTO, bool>>? DictionaryRol(string? opcion, string? data)
         {
             bool validarOpcion = opcion.IsNullOrEmpty();
@@ -21,14 +22,14 @@ namespace ApiVentas.DTOs
             Expression<Func<RolDTO, bool>> query;
             if (validarOpcion)
             {
-                query = x => x.Estado == 1;
+                query = x => x.EstadoId == 1;
             }
             else
             {
                 var DictionaryRol= new Dictionary<string, Expression<Func<RolDTO, bool>>>();
-                DictionaryRol.Add("id", x => x.RolId== in1 && x.Estado == 1);
-                DictionaryRol.Add("descripcion", x => x.RolDescripcion.ToLower().Equals(data.ToLower()) && x.Estado == 1);
-                DictionaryRol.Add("estado", x => x.Estado == in1);
+                DictionaryRol.Add("id", x => x.RolId== in1 && x.EstadoId == 1);
+                DictionaryRol.Add("descripcion", x => x.RolDescripcion.ToLower().Equals(data.ToLower()) && x.EstadoId == 1);
+                DictionaryRol.Add("estado", x => x.EstadoId == in1);
                 query = !validarOpcion ? DictionaryRol.ContainsKey(opcion.ToLower()) && !validarData ? DictionaryRol[opcion.ToLower()] : null : null;
             }
             return query;

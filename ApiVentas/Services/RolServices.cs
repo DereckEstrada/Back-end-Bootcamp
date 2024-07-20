@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class RolServices:IRol, IAssemly<Rol>
+    public class RolServices : IRolServices, IAssemly<Rol>
     {
         private BaseErpContext _context;
         private RolDTO dto = new RolDTO();
@@ -22,10 +22,10 @@ namespace ApiVentas.Services
             var result = new Respuesta();
             try
             {
-                var rolDelete = await _context.Rols.FirstOrDefaultAsync(x => x.RolId== id);
+                var rolDelete = await _context.Rols.FirstOrDefaultAsync(x => x.RolId == id);
                 if (rolDelete != null)
                 {
-                    rolDelete.Estado = 2;
+                    rolDelete.EstadoId = 2;
                     _context.Rols.Update(rolDelete);
                     await _context.SaveChangesAsync();
                 }
@@ -53,16 +53,18 @@ namespace ApiVentas.Services
                 {
                     result.data = await (from rol in _context.Rols
                                          join userReg in _context.Usuarios on rol.UsuIdReg equals userReg.UsuId
+                                         join est in _context.Estados on rol.EstadoId equals est.EstadoId
                                          select new RolDTO
                                          {
-                                            RolId=rol.RolId,
-                                            RolDescripcion=rol.RolDescripcion,
-                                            Estado=rol.Estado,
-                                            FechaHoraReg=rol.FechaHoraReg,
-                                            FechaHoraAct=rol.FechaHoraAct,  
-                                            UsuIdReg=rol.UsuIdReg,
-                                            UsuRegDescrip=userReg.UsuNombre,
-                                            UsuIdAct=rol.UsuIdAct,
+                                             RolId = rol.RolId,
+                                             RolDescripcion = rol.RolDescripcion,
+                                             EstadoId = rol.EstadoId,
+                                             EstadoDescrip=est.EstadoDescrip,
+                                             FechaHoraReg = rol.FechaHoraReg,
+                                             FechaHoraAct = rol.FechaHoraAct,
+                                             UsuIdReg = rol.UsuIdReg,
+                                             UsuRegDescrip = userReg.UsuNombre,
+                                             UsuIdAct = rol.UsuIdAct,
                                          }).Where(query).ToListAsync();
                 }
                 result.cod = empty.IsEmpty(result.data) ? "111" : "000";
@@ -84,7 +86,7 @@ namespace ApiVentas.Services
             try
             {
                 var id = await _context.Rols.OrderByDescending(x => x.RolId).Select(x => x.RolId).FirstOrDefaultAsync() + 1;
-                rol.RolId= id;
+                rol.RolId = id;
                 rol.FechaHoraReg = DateTime.Now;
                 var validar = rol.UsuIdReg != null;
                 if (validar)
@@ -110,7 +112,7 @@ namespace ApiVentas.Services
             var result = new Respuesta();
             try
             {
-                var validar = await _context.Rols.AnyAsync(x => x.RolId== rol.RolId);
+                var validar = await _context.Rols.AnyAsync(x => x.RolId == rol.RolId);
                 var usuarioEdit = rol.UsuIdAct;
                 if (validar && usuarioEdit != null)
                 {

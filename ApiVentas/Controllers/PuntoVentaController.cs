@@ -10,9 +10,9 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class PuntoVentaController : ControllerBase
     {
-        private readonly IPuntoVenta _puntoVenta;
+        private readonly IPuntoVentaServices _puntoVenta;
         private ControlError log = new ControlError();
-        public PuntoVentaController(IPuntoVenta puntoVenta)
+        public PuntoVentaController(IPuntoVentaServices puntoVenta)
         {
             this._puntoVenta = puntoVenta;
         }

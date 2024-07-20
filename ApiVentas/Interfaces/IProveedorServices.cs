@@ -3,7 +3,7 @@ using ApiVentas.Utilitarios;
 
 namespace ApiVentas.Interfaces
 {
-    public interface IProveedor
+    public interface IProveedorServices
     {
         Task<Respuesta> GetProveedor(string? opcion, string? data);
         Task<Respuesta> PostProveedor(Proveedor proveedor);

@@ -10,9 +10,9 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class RolController : ControllerBase
     {
-        private readonly IRol _rol;
+        private readonly IRolServices _rol;
         private ControlError log = new ControlError();
-        public RolController(IRol rol)
+        public RolController(IRolServices rol)
         {
             this._rol = rol;
         }

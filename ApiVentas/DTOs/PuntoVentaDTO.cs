@@ -9,7 +9,8 @@ namespace ApiVentas.DTOs
         public string? PuntovtaNombre { get; set; }
         public int? PuntoEmisionId { get; set; }
         public string? PuntoEmisionDescrip{ get; set; }
-        public short? Estado { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescrip { get; set; }
         public DateTime? FechaHoraReg { get; set; }
         public DateTime? FechaHoraAct { get; set; }
         public int? UsuIdReg { get; set; }
@@ -26,15 +27,15 @@ namespace ApiVentas.DTOs
             Expression<Func<PuntoVentaDTO, bool>> query;
             if (validarOpcion)
             {
-                query = x => x.Estado==1;
+                query = x => x.EstadoId==1;
             }
             else
             {
                 var DictionaryPuntoVenta= new Dictionary<string, Expression<Func<PuntoVentaDTO, bool>>>();
-                DictionaryPuntoVenta.Add("id", x => x.PuntovtaId== in1 && x.Estado==1);
-                DictionaryPuntoVenta.Add("nombre", x => x.PuntovtaNombre.ToLower().Equals(data.ToLower()) && x.Estado==1);
-                DictionaryPuntoVenta.Add("puntoemision", x => x.PuntoEmisionId==in1 && x.Estado==1);
-                DictionaryPuntoVenta.Add("estado", x => x.Estado==in1);
+                DictionaryPuntoVenta.Add("id", x => x.PuntovtaId== in1 && x.EstadoId==1);
+                DictionaryPuntoVenta.Add("nombre", x => x.PuntovtaNombre.ToLower().Equals(data.ToLower()) && x.EstadoId==1);
+                DictionaryPuntoVenta.Add("puntoemision", x => x.PuntoEmisionId==in1 && x.EstadoId==1);
+                DictionaryPuntoVenta.Add("estado", x => x.EstadoId==in1);
                 query = !validarOpcion ? DictionaryPuntoVenta.ContainsKey(opcion.ToLower()) && !validarData ? DictionaryPuntoVenta[opcion.ToLower()] : null : null;
             }
             return query;

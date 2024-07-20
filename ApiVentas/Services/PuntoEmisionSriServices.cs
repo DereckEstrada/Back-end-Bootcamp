@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class PuntoEmisionSriServices: IPuntoEmisionSri, IAssemly<PuntoEmisionSri>
+    public class PuntoEmisionSriServices: IPuntoEmisionSriServices, IAssemly<PuntoEmisionSri>
     {
         private BaseErpContext _context;
         private PuntoEmisionSriDTO dto = new PuntoEmisionSriDTO();
@@ -25,7 +25,7 @@ namespace ApiVentas.Services
                 var emisionSriDelete = await _context.PuntoEmisionSris.FirstOrDefaultAsync(x => x.PuntoEmisionId== id);
                 if (emisionSriDelete != null)
                 {
-                    emisionSriDelete.Estado = 2;
+                    emisionSriDelete.EstadoId = 2;
                     _context.PuntoEmisionSris.Update(emisionSriDelete);
                     await _context.SaveChangesAsync();
                 }
@@ -55,7 +55,8 @@ namespace ApiVentas.Services
                                          join e in _context.Empresas on emision.EmpresaId equals e.EmpresaId   
                                          join s in _context.Sucursals on emision.SucursalId equals s.SucursalId
                                          join userReg in _context.Usuarios on emision.UsuIdReg equals userReg.UsuId
-                                         join userAct in _context.Usuarios on emision.UsuIdAct equals userAct.UsuId
+                                         join est in _context.Estados on emision.EstadoId equals est.EstadoId
+                                         //join userAct in _context.Usuarios on emision.UsuIdAct equals userAct.UsuId
                                          select new PuntoEmisionSriDTO
                                          {
                                              PuntoEmisionId= emision.PuntoEmisionId,
@@ -66,13 +67,14 @@ namespace ApiVentas.Services
                                              SucursalDescrip=s.SucursalNombre,
                                              CodEstablecimientoSri=emision.CodEstablecimientoSri,
                                              UltSecuencia=emision.UltSecuencia,
-                                             Estado=emision.Estado,
+                                             EstadoId=emision.EstadoId,
+                                             EstadoDescrip=est.EstadoDescrip,
                                              FechaHoraReg=emision.FechaHoraReg, 
                                              FechaHoraAct=emision.FechaHoraAct,
                                              UsuIdReg=emision.UsuIdReg,
                                              UsuRegDescrip=userReg.UsuNombre,
-                                             UsuIdAct=userAct.UsuIdAct,
-                                             UsuActDescrip=userAct.UsuNombre
+                                             UsuIdAct=emision.UsuIdAct,
+                                             //UsuActDescrip=userAct.UsuNombre
                                          }).Where(query).ToListAsync();
                 }
                 result.cod = empty.IsEmpty(result.data) ? "111" : "000";

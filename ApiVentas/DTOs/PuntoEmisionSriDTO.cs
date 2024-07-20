@@ -13,7 +13,8 @@ namespace ApiVentas.DTOs
         public string? SucursalDescrip{ get; set; }
         public string? CodEstablecimientoSri { get; set; }
         public int? UltSecuencia { get; set; }
-        public short? Estado { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescrip { get; set; }
         public DateTime? FechaHoraReg { get; set; }
         public DateTime? FechaHoraAct { get; set; }
         public int? UsuIdReg { get; set; }
@@ -28,18 +29,18 @@ namespace ApiVentas.DTOs
             Expression<Func<PuntoEmisionSriDTO, bool>> query;
             if (validarOpcion)
             {
-                query = x => x.Estado==1;
+                query = x => x.EstadoId==1;
             }
             else
             {
                 var DictionaryPuntoSri= new Dictionary<string, Expression<Func<PuntoEmisionSriDTO, bool>>>();
-                DictionaryPuntoSri.Add("id", x => x.PuntoEmisionId== in1 && x.Estado==1);
-                DictionaryPuntoSri.Add("puntoemision", x => x.PuntoEmision.ToLower().Equals(data.ToLower()) && x.Estado == 1);
-                DictionaryPuntoSri.Add("empresa", x => x.EmpresaId==in1 && x.Estado == 1);
-                DictionaryPuntoSri.Add("sucursal", x => x.SucursalId==in1 && x.Estado== 1);
-                DictionaryPuntoSri.Add("establecimiento", x => x.CodEstablecimientoSri.ToLower().Equals(data.ToLower()) && x.Estado == 1);
-                DictionaryPuntoSri.Add("utl", x => x.UltSecuencia== in1 && x.Estado == 1);
-                DictionaryPuntoSri.Add("estado", x => x.Estado.Equals(data.ToUpper()));
+                DictionaryPuntoSri.Add("id", x => x.PuntoEmisionId== in1 && x.EstadoId==1);
+                DictionaryPuntoSri.Add("puntoemision", x => x.PuntoEmision.ToLower().Equals(data.ToLower()) && x.EstadoId == 1);
+                DictionaryPuntoSri.Add("empresa", x => x.EmpresaId==in1 && x.EstadoId == 1);
+                DictionaryPuntoSri.Add("sucursal", x => x.SucursalId==in1 && x.EstadoId== 1);
+                DictionaryPuntoSri.Add("establecimiento", x => x.CodEstablecimientoSri.ToLower().Equals(data.ToLower()) && x.EstadoId == 1);
+                DictionaryPuntoSri.Add("utl", x => x.UltSecuencia== in1 && x.EstadoId == 1);
+                DictionaryPuntoSri.Add("estado", x => x.EstadoId==1);
                 query = !validarOpcion ? DictionaryPuntoSri.ContainsKey(opcion.ToLower()) && !validarData ? DictionaryPuntoSri[opcion.ToLower()] : null : null;
             }
             return query;

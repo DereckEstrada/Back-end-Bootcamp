@@ -10,9 +10,9 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class ProveedorController : ControllerBase
     {
-        private readonly IProveedor _proveedor;
+        private readonly IProveedorServices _proveedor;
         private ControlError log = new ControlError();
-        public ProveedorController(IProveedor proveedor)
+        public ProveedorController(IProveedorServices proveedor)
         {
             this._proveedor = proveedor;
         }

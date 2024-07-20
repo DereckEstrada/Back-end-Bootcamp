@@ -9,7 +9,7 @@ using System.Linq.Dynamic;
 
 namespace ApiVentas.Services
 {
-    public class ProductoServices : IProducto, IAssemly<Producto>
+    public class ProductoServices : IProductoServices, IAssemly<Producto>
     {
         private BaseErpContext _context;
         private ProductoDTO dto=new ProductoDTO();
@@ -27,7 +27,7 @@ namespace ApiVentas.Services
                 var productoDelete= await _context.Productos.FirstOrDefaultAsync(x=>x.ProdId==id);
                 if (productoDelete!=null) 
                 {
-                    productoDelete.Estado = 2;
+                    productoDelete.EstadoId = 2;
                     _context.Productos.Update(productoDelete);
                     await _context.SaveChangesAsync();
                 }
@@ -48,7 +48,7 @@ namespace ApiVentas.Services
         public async Task<Respuesta> GetProducto(string? opcion, string? data, string? data2)
         {
             var result = new Respuesta();
-            Expression<Func<ProductoDTO, bool>> query =ProductoDTO.DictionaryProducto(opcion, data, data2);
+            Expression<Func<ProductoDTO, bool>> query =dto.DictionaryProducto(opcion, data, data2);
             try
             {
                 result.cod = "000";
@@ -60,7 +60,8 @@ namespace ApiVentas.Services
                                         join e in _context.Empresas on p.EmpresaId equals e.EmpresaId
                                         join prove in _context.Proveedors on p.ProveedorId equals prove.ProvId
                                         join userReg in _context.Usuarios on p.UsuIdReg equals userReg.UsuId
-                                        join userAct in _context.Usuarios on p.UsuIdAct equals userAct.UsuId
+                                        join est in _context.Estados on p.EstadoId equals est.EstadoId
+                                        //join userAct in _context.Usuarios on p.UsuIdAct equals userAct.UsuId
                                         select new ProductoDTO
                                    {
                                        ProdId = p.ProdId,
@@ -71,8 +72,9 @@ namespace ApiVentas.Services
                                        UsuIdReg = p.UsuIdReg,
                                        UsuRegDescrip = userReg.UsuNombre,
                                        UsuIdAct = p.UsuIdAct,
-                                       UsuActDescrip = userAct.UsuNombre,
-                                       Estado = p.Estado,
+                                       //UsuActDescrip = userAct.UsuNombre,
+                                       EstadoId = p.EstadoId,
+                                       EstadoDescrip=est.EstadoDescrip,
                                        CategoriaId = p.CategoriaId,
                                        CategoriaDesrip = c.CategoriaDescrip,
                                        EmpresaId = p.EmpresaId,

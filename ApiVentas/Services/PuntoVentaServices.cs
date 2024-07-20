@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class PuntoVentaServices: IPuntoVenta, IAssemly<PuntoVentum>
+    public class PuntoVentaServices: IPuntoVentaServices, IAssemly<PuntoVentum>
     {
         private BaseErpContext _context;
         private PuntoVentaDTO dto = new PuntoVentaDTO();
@@ -26,7 +26,7 @@ namespace ApiVentas.Services
                 var puntoVentaDelete = await _context.PuntoVenta.FirstOrDefaultAsync(x => x.PuntovtaId== id);
                 if (puntoVentaDelete != null)
                 {
-                    puntoVentaDelete.Estado = 2;
+                    puntoVentaDelete.EstadoId = 2;
                     _context.PuntoVenta.Update(puntoVentaDelete);
                     await _context.SaveChangesAsync();
                 }
@@ -56,20 +56,22 @@ namespace ApiVentas.Services
                                          join emision in _context.PuntoEmisionSris on puntoVenta.PuntoEmisionId equals emision.PuntoEmisionId
                                          join s in _context.Sucursals on puntoVenta.SucursalId equals s.SucursalId
                                          join userReg in _context.Usuarios on puntoVenta.UsuIdReg equals userReg.UsuId
-                                         join userAct in _context.Usuarios on puntoVenta.UsuIdAct equals userAct.UsuId
+                                         join est in _context.Estados on puntoVenta.EstadoId equals est.EstadoId
+                                         //join userAct in _context.Usuarios on puntoVenta.UsuIdAct equals userAct.UsuId
                                          select new PuntoVentaDTO
                                          {
                                              PuntovtaId=puntoVenta.PuntovtaId,
                                              PuntovtaNombre=puntoVenta.PuntovtaNombre,
                                              PuntoEmisionId=puntoVenta.PuntoEmisionId,
                                              PuntoEmisionDescrip=emision.PuntoEmision,
-                                             Estado=puntoVenta.Estado,
+                                             EstadoId=puntoVenta.EstadoId,
+                                             EstadoDescrip=est.EstadoDescrip,
                                              FechaHoraReg=puntoVenta.FechaHoraReg,
                                              FechaHoraAct=puntoVenta.FechaHoraAct,
                                              UsuIdReg=puntoVenta.UsuIdReg,
                                              UsuRegDescrip=userReg.UsuNombre,
                                              UsuIdAct=puntoVenta.UsuIdAct,
-                                             UsuActDescrip=userAct.UsuNombre,
+                                             //UsuActDescrip=userAct.UsuNombre,
                                              SucursalId=puntoVenta.SucursalId,
                                              SucursalDescrip=s.SucursalNombre
                                          }).Where(query).ToListAsync();
