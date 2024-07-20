@@ -6,7 +6,7 @@
 
         public string? CiuNombre { get; set; }
 
-        public int? Estado { get; set; }
+        public string? EstadoDesc { get; set; }
 
         public DateTime? FechaHoraReg { get; set; }
 

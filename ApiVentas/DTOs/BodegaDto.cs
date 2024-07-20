@@ -10,7 +10,7 @@
 
         public string? BodTel { get; set; }
 
-        public short? Estado { get; set; }
+        public string? EstadoDesc { get; set; }
 
         public DateTime? FecHoraReg { get; set; }
 

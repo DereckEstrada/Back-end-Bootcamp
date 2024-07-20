@@ -23,7 +23,8 @@ namespace ApiVentas.Services
             try
             {
                 var query = from cl in _context.Clientes
-                            where cl.Estado == 1
+                            join es in _context.Estados on cl.EstadoId equals es.EstadoId
+                            where es.EstadoId == 1
                             select new ClienteDto
                             {
                                 ClienteID = cl.ClienteId,
@@ -35,7 +36,7 @@ namespace ApiVentas.Services
                                 CliEmail = cl.ClienteEmail,
                                 CliTel = cl.ClienteTelefono,
                                 CliDir = cl.ClienteDireccion,
-                                Estado = cl.Estado,
+                                EstadoDesc = es.EstadoDescrip,
                                 FecHoraReg = cl.FechaHoraReg,
                                 FecHoraAct = cl.FechaHoraAct
                             };
@@ -121,9 +122,7 @@ namespace ApiVentas.Services
                 if (existingCliente)
                 {
 
-                    var fechaActualString = DateTime.Now.ToString("dd-MM-yyyy");
-                    DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-                    cliente.FechaHoraAct = fechaActualDateOnly;
+                    cliente.FechaHoraAct = DateTime.Now;
 
                     _context.Clientes.Update(cliente);
                     await _context.SaveChangesAsync();
@@ -155,11 +154,9 @@ namespace ApiVentas.Services
                 if (existingCliente)
                 {
 
-                    var fechaActualString = DateTime.Now.ToString("dd-MM-yyyy");
-                    DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-                    cliente.FechaHoraAct = fechaActualDateOnly;
+                    cliente.FechaHoraAct = DateTime.Now;
 
-                    cliente.Estado = 0;
+                    cliente.EstadoId = 2;
                     
                     _context.Clientes.Update(cliente);
                     await _context.SaveChangesAsync();

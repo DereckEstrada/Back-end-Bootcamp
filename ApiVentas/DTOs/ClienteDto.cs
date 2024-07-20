@@ -20,10 +20,10 @@
 
         public string? CliDir { get; set; }
 
-        public short? Estado { get; set; }
+        public string? EstadoDesc { get; set; }
 
         public DateTime? FecHoraReg { get; set; }
 
-        public DateOnly? FecHoraAct { get; set; }
+        public DateTime? FecHoraAct { get; set; }
     }
 }

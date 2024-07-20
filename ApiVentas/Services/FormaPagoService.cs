@@ -25,12 +25,13 @@ namespace ApiVentas.Services
             try
             {
                 var query = from fp in _context.FormaPagos
-                            where fp.Estado == 1
+                            join es in _context.Estados on fp.EstadoId equals es.EstadoId
+                            where es.EstadoId == 1
                             select new FormaPagoDto
                             {
                                 FpagoID = fp.FpagoId,
                                 FpagoDescrip = fp.FpagoDescripcion,
-                                Estado = fp.Estado,
+                                EstadoDesc = es.EstadoDescrip,
                                 FecHoraReg = fp.FechaHoraReg,
                                 FecHoraAct = fp.FechaHoraAct
                             };
@@ -132,7 +133,7 @@ namespace ApiVentas.Services
                     DateOnly fechaActualDateOnly = DateOnly.ParseExact(fechaActualString, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                     formaPago.FechaHoraAct = DateTime.Now;
 
-                    formaPago.Estado = 0;
+                    formaPago.EstadoId = 2;
                     _context.FormaPagos.Update(formaPago);
                     await _context.SaveChangesAsync();
 

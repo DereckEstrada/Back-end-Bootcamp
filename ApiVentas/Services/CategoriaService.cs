@@ -25,12 +25,13 @@ namespace ApiVentas.Services
             try
             {
                 var query = from c in _context.Categoria
-                            where c.Estado == 1
+                            join es in _context.Estados on c.EstadoId equals es.EstadoId
+                            where es.EstadoId == 1
                             select new CategoriaDto
                             {
                                 CategoriaID = c.CategoriaId,
                                 CategDescrip = c.CategoriaDescrip,
-                                Estado = c.Estado,
+                                EstadoDesc = es.EstadoDescrip,
                                 FecHoraReg = c.FechaHoraReg,
                                 FecHoraAct = c.FechaHoraAct
                             };
@@ -131,7 +132,7 @@ namespace ApiVentas.Services
                 {
                     categoria.FechaHoraAct = DateTime.Now;
 
-                    categoria.Estado = 0;
+                    categoria.EstadoId = 2;
                     _context.Categoria.Update(categoria);
                     await _context.SaveChangesAsync();
 

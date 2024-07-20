@@ -25,12 +25,13 @@ namespace ApiVentas.Services
             try
             {
                 var query = from ind in _context.Industria
-                            where ind.Estado == 1
+                            join es in _context.Estados on ind.EstadoId equals es.EstadoId
+                            where es.EstadoId == 1
                             select new IndustriaDto
                             {
                                 IndustriaID = ind.IndustriaId,
                                 IndustriaDescrip = ind.IndustriaDescripcion,
-                                Estado = ind.Estado,
+                                EstadoDesc = es.EstadoDescrip,
                                 FecHoraReg = ind.FechaHoraReg,
                                 FecHoraAct = ind.FechaHoraAct
                             };
@@ -130,7 +131,7 @@ namespace ApiVentas.Services
                 {
                     industria.FechaHoraAct = DateTime.Now;
 
-                    industria.Estado = 0;
+                    industria.EstadoId = 2;
                     _context.Industria.Update(industria);
                     await _context.SaveChangesAsync();
 

@@ -26,14 +26,15 @@ namespace ApiVentas.Services
             {
                 var query = (from b in _context.Bodegas
                              join suc in _context.Sucursals on b.SucursalId equals suc.SucursalId
-                             where b.Estado == 1
+                             join es in _context.Estados on b.EstadoId equals es.EstadoId
+                             where es.EstadoId == 1
                              select new BodegaDto
                              {
                                  BodegaID = b.BodegaId,
                                  BodNombre = b.BodegaNombre,
                                  BodDir = b.BodegaDireccion,
                                  BodTel = b.BodegaTelefono,
-                                 Estado = b.Estado,
+                                 EstadoDesc = es.EstadoDescrip,
                                  FecHoraReg = b.FechaHoraReg,
                                  FecHoraAct = b.FechaHoraAct,
                                  SucursalDescrip = suc.SucursalNombre 
@@ -152,7 +153,7 @@ namespace ApiVentas.Services
                 {
                     bodega.FechaHoraAct = DateTime.Now;
 
-                    bodega.Estado = 0;
+                    bodega.EstadoId = 2;
                     _context.Bodegas.Update(bodega);
                     await _context.SaveChangesAsync();
 

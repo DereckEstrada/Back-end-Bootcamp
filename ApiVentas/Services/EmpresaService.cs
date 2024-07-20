@@ -26,7 +26,8 @@ namespace ApiVentas.Services
             {
                 var query = from emp in _context.Empresas
                             join ciu in _context.Ciudads on emp.CiudadId equals ciu.CiudadId
-                            where emp.Estado == 1
+                            join es in _context.Estados on emp.EstadoId equals es.EstadoId
+                            where es.EstadoId == 1
                             select new EmpresaDto
                             {
                                 EmpID = emp.EmpresaId,
@@ -36,7 +37,7 @@ namespace ApiVentas.Services
                                 EmpDirMatriz = emp.EmpresaDireccionMatriz,
                                 EmpTelMatriz = emp.EmpresaTelefonoMatriz,
                                 CiudadDescrip = ciu.CiudadNombre,
-                                Estado = emp.Estado,
+                                EstadoDesc = es.EstadoDescrip,
                                 FecHoraReg = emp.FechaHoraReg,
                                 FecHoraAct = emp.FechaHoraAct
                             };
@@ -165,7 +166,7 @@ namespace ApiVentas.Services
                 {
                     empresa.FechaHoraAct = DateTime.Now;
 
-                    empresa.Estado = 0;
+                    empresa.EstadoId = 2;
                     _context.Empresas.Update(empresa);
                     await _context.SaveChangesAsync();
 
