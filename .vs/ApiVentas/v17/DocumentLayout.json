@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\",
+  "WorkspaceRootPath": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\usuario\\source\\repos\\bootcamp\\apiventas\\models\\categorium.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\respaldo\\bootcamp\\apiventas\\models\\categorium.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\models\\categorium.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\usuario\\source\\repos\\bootcamp\\apiventas\\models\\bodega.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\respaldo\\bootcamp\\apiventas\\models\\bodega.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\models\\bodega.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,15 +18,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Categorium.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Models\\Categorium.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Categorium.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Models\\Categorium.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Models\\Categorium.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Categorium.cs",
               "RelativeToolTip": "ApiVentas\\Models\\Categorium.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -37,14 +41,13 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Bodega.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Models\\Bodega.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\source\\repos\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
               "RelativeToolTip": "ApiVentas\\Models\\Bodega.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-20T14:24:52.356Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-20T14:24:52.356Z"
             }
           ]
         }
