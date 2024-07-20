@@ -9,7 +9,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace ApiVentas.Services
 {
-    public class ProveedorServices: IProveedor, IAssemly<Proveedor>
+    public class ProveedorServices: IProveedorServices
     {
         private BaseErpContext _context;
         private ProveedorDTO dto = new ProveedorDTO();
@@ -27,7 +27,7 @@ namespace ApiVentas.Services
                 var proveedorDelete = await _context.Proveedors.FirstOrDefaultAsync(x => x.ProvId== id);
                 if (proveedorDelete != null)
                 {
-                    proveedorDelete.Estado = "I";
+                    proveedorDelete.EstadoId = 2;
                     _context.Proveedors.Update(proveedorDelete);
                     await _context.SaveChangesAsync();
                 }
@@ -56,24 +56,26 @@ namespace ApiVentas.Services
                     result.data = await (from prove in _context.Proveedors
                                          join c in _context.Ciudads on prove.CiudadId equals c.CiudadId
                                          join userReg in _context.Usuarios on prove.UsuIdReg equals userReg.UsuId
-                                         join userAct in _context.Usuarios on prove.UsuIdAct equals userAct.UsuId
+                                         join est in _context.Estados on prove.EstadoId equals est.EstadoId
+                                         //join userAct in _context.Usuarios on prove.UsuIdAct equals userAct.UsuId
                                          select new ProveedorDTO
                                          {
                                              ProvId = prove.ProvId,
                                              ProvRuc=prove.ProvRuc,
-                                             ProvNomComercial=prove.ProvDireccion,
+                                             ProvNomComercial=prove.ProvNomComercial,
                                              ProvRazon=prove.ProvRazon,
                                              ProvDireccion=prove.ProvDireccion,
                                              ProvTelefono=prove.ProvTelefono,
                                              CiudadId=prove.CiudadId,
                                              CiudadDescrip=c.CiudadNombre,
-                                             Estado=prove.Estado,
+                                             EstadoId=prove.EstadoId,
+                                             EstadoDescrip=est.EstadoDescrip,
                                              FechaHoraReg=prove.FechaHoraReg,
                                              FechaHoraAct=prove.FechaHoraAct,
                                              UsuIdReg=prove.UsuIdReg,
                                              UsuRegDescrip=userReg.UsuNombre,
                                              UsuIdAct=prove.UsuIdAct,   
-                                             UsuActDescrip=userAct.UsuNombre   
+                                             //UsuActDescrip=userAct.UsuNombre   
                                          }).Where(query).ToListAsync();
                 }
                 result.cod = empty.IsEmpty(result.data) ? "111" : "000";

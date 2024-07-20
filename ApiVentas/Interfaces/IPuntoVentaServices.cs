@@ -3,7 +3,7 @@ using ApiVentas.Utilitarios;
 
 namespace ApiVentas.Interfaces
 {
-    public interface IPuntoVenta
+    public interface IPuntoVentaServices
     {
         Task<Respuesta> GetPuntoVenta(string? opcion, string? data);
         Task<Respuesta> PostPuntoVenta(PuntoVentum puntoVenta);

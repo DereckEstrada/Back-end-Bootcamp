@@ -4,10 +4,11 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
 
 namespace ApiVentas.Services
 {
-    public class StockServices: IStock, IAssemly<Stock>
+    public class StockServices : IStockServices
     {
         private BaseErpContext _context;
         private StockDTO dto = new StockDTO();
@@ -22,10 +23,10 @@ namespace ApiVentas.Services
             var result = new Respuesta();
             try
             {
-                var stockDelete = await _context.Stocks.FirstOrDefaultAsync(x => x.StockId== id);
+                var stockDelete = await _context.Stocks.FirstOrDefaultAsync(x => x.StockId == id);
                 if (stockDelete != null)
                 {
-                    stockDelete.Estado = 2;
+                    stockDelete.EstadoId = 2;
                     _context.Stocks.Update(stockDelete);
                     await _context.SaveChangesAsync();
                 }
@@ -55,28 +56,30 @@ namespace ApiVentas.Services
                     result.data = await (from stock in _context.Stocks
                                          join e in _context.Empresas on stock.EmpresaId equals e.EmpresaId
                                          join s in _context.Sucursals on stock.SucursalId equals s.SucursalId
-                                         join b in _context.Bodegas on stock.BodegaId equals b.BodegaId 
+                                         join b in _context.Bodegas on stock.BodegaId equals b.BodegaId
                                          join p in _context.Productos on stock.ProdId equals p.ProdId
                                          join userReg in _context.Usuarios on stock.UsuIdReg equals userReg.UsuId
-                                         join userAct in _context.Usuarios on stock.UsuIdAct equals userAct.UsuId
+                                         join est in _context.Estados on stock.EstadoId equals est.EstadoId 
+                                         //join userAct in _context.Usuarios on stock.UsuIdAct equals userAct.UsuId
                                          select new StockDTO
                                          {
-                                             StockId=stock.StockId,
-                                             EmpresaId=e.EmpresaId,
-                                             EmpresaDescrip=e.EmpresaNombre,
-                                             SucursalId=stock.SucursalId,
-                                             SucursalDescrip=s.SucursalNombre,
-                                             BodegaId=stock.BodegaId,
-                                             BodegaDescrip=b.BodegaNombre,
-                                             ProdId=stock.ProdId,
-                                             ProdDescrip=p.ProdDescripcion,
-                                             Estado = stock.Estado,
+                                             StockId = stock.StockId,
+                                             EmpresaId = e.EmpresaId,
+                                             EmpresaDescrip = e.EmpresaNombre,
+                                             SucursalId = stock.SucursalId,
+                                             SucursalDescrip = s.SucursalNombre,
+                                             BodegaId = stock.BodegaId,
+                                             BodegaDescrip = b.BodegaNombre,
+                                             ProdId = stock.ProdId,
+                                             ProdDescrip = p.ProdDescripcion,
+                                             EstadoId = stock.EstadoId,
+                                             EstadoDescrip=est.EstadoDescrip,   
                                              FechaHoraReg = stock.FechaHoraReg,
                                              FechaHoraAct = stock.FechaHoraAct,
                                              UsuIdReg = stock.UsuIdReg,
                                              UsuRegDescrip = userReg.UsuNombre,
-                                             UsuIdAct = userAct.UsuIdAct,
-                                             UsuActDescrip = userAct.UsuNombre                              
+                                             UsuIdAct = stock.UsuIdAct,
+                                             //UsuActDescrip = userAct.UsuNombre                              
                                          }).Where(query).ToListAsync();
                 }
                 result.cod = empty.IsEmpty(result.data) ? "111" : "000";
@@ -98,7 +101,7 @@ namespace ApiVentas.Services
             try
             {
                 var id = await _context.Stocks.OrderByDescending(x => x.StockId).Select(x => x.StockId).FirstOrDefaultAsync() + 1;
-                stock.StockId= id;
+                stock.StockId = id;
                 stock.FechaHoraReg = DateTime.Now;
                 var validar = stock.UsuIdReg != null;
                 if (validar)
@@ -124,7 +127,7 @@ namespace ApiVentas.Services
             var result = new Respuesta();
             try
             {
-                var validar = await _context.Stocks.AnyAsync(x => x.StockId== stock.StockId);
+                var validar = await _context.Stocks.AnyAsync(x => x.StockId == stock.StockId);
                 var usuarioEdit = stock.UsuIdAct;
                 if (validar && usuarioEdit != null)
                 {

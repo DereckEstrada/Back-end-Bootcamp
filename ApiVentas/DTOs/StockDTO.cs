@@ -17,7 +17,8 @@ namespace ApiVentas.DTOs
         public int? ProdId { get; set; }
         public string? ProdDescrip{ get; set; }
         public int? CantidadStock { get; set; }
-        public short? Estado { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescrip { get; set; }
         public DateTime? FechaHoraReg { get; set; }
         public DateTime? FechaHoraAct { get; set; }
         public int? UsuIdReg { get; set; }
@@ -34,18 +35,18 @@ namespace ApiVentas.DTOs
             Expression<Func<StockDTO, bool>> query;
             if (validarOpcion)
             {
-                query = x => x.Estado == 1;
+                query = x => x.EstadoId == 1;
             }
             else if(validarData2)
             {
                 var DictionaryStock= new Dictionary<string, Expression<Func<StockDTO, bool>>>();
-                DictionaryStock.Add("id", x => x.StockId== in1 && x.Estado == 1);
-                DictionaryStock.Add("empresa", x => x.EmpresaId==in1 && x.Estado == 1);
-                DictionaryStock.Add("sucursal", x => x.SucursalId== in1 && x.Estado == 1);
-                DictionaryStock.Add("producto", x => x.ProdId== in1 && x.Estado == 1);
-                DictionaryStock.Add("sucursal", x => x.SucursalId== in1 && x.Estado == 1);
-                DictionaryStock.Add("cantidadstock", x => x.CantidadStock== in1 && x.Estado == 1);
-                DictionaryStock.Add("estado", x => x.Estado == in1);
+                DictionaryStock.Add("id", x => x.StockId== in1 && x.EstadoId == 1);
+                DictionaryStock.Add("empresa", x => x.EmpresaId==in1 && x.EstadoId == 1);
+                DictionaryStock.Add("sucursal", x => x.SucursalId== in1 && x.EstadoId == 1);
+                DictionaryStock.Add("producto", x => x.ProdId== in1 && x.EstadoId == 1);
+                DictionaryStock.Add("sucursal", x => x.SucursalId== in1 && x.EstadoId == 1);
+                DictionaryStock.Add("cantidadstock", x => x.CantidadStock== in1 && x.EstadoId == 1);
+                DictionaryStock.Add("estado", x => x.EstadoId == in1);
                 query = !validarOpcion ? DictionaryStock.ContainsKey(opcion.ToLower()) && !validarData ? DictionaryStock[opcion.ToLower()] : null : null;
             }
             else

@@ -1,6 +1,7 @@
 ﻿using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiVentas.Controllers
@@ -48,7 +49,6 @@ namespace ApiVentas.Controllers
             }
             return respuesta;
         }
-
         [HttpPut]
         [Route("PutBodega")]
         public async Task<Respuesta> PutBodega([FromBody] Bodega bodega)
@@ -78,7 +78,6 @@ namespace ApiVentas.Controllers
             {
                 Log.LogErrorMetodos("BodegaController", "DeleteBodega", ex.Message);
             }
-
             return respuesta;
         }
     }

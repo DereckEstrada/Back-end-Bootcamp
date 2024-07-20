@@ -3,7 +3,7 @@ using ApiVentas.Utilitarios;
 
 namespace ApiVentas.Interfaces
 {
-    public interface IRol
+    public interface IRolServices
     {
         Task<Respuesta> GetRol(string? opcion, string? data);
         Task<Respuesta> PostRol(Rol rol);

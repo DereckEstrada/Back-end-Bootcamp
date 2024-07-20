@@ -12,9 +12,9 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class ProductoController : ControllerBase
     {
-        private readonly IProducto _producto;
+        private readonly IProductoServices _producto;
         private ControlError log = new ControlError();
-        public ProductoController(IProducto producto)
+        public ProductoController(IProductoServices producto)
         {
             this._producto = producto;
         }

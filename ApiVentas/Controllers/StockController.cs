@@ -10,9 +10,9 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class StockController : ControllerBase
     {
-        private readonly IStock _stock;
+        private readonly IStockServices _stock;
         private ControlError log = new ControlError();
-        public StockController(IStock stock)
+        public StockController(IStockServices stock)
         {
             this._stock = stock;
         }
