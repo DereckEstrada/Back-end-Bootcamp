@@ -1,0 +1,8 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/ApiVentas/bin/Debug/net8.0
+/ApiVentas/obj/Debug/net8.0
+/.vs/ApiVentas
+*.user
