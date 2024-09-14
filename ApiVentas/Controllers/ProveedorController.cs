@@ -3,6 +3,7 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiVentas.Controllers
 {
@@ -10,71 +11,66 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class ProveedorController : ControllerBase
     {
-        private readonly IProveedorServices _proveedor;
+        private readonly IProveedorServices _proveedorServices;
         private ControlError log = new ControlError();
         public ProveedorController(IProveedorServices proveedor)
         {
-            this._proveedor = proveedor;
-        }
-        [HttpGet]
-        [Route("GetProveedor")]
-        public async Task<Respuesta> GetProveedor(string? opcion, string? data)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _proveedor.GetProveedor(opcion, data);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "GetProveedor", ex.Message);
-            }
-            return result;
+            this._proveedorServices = proveedor;
         }
         [HttpPost]
-        [Route("PostProveedor")]
-        public async Task<Respuesta> PostProveedor([FromBody] Proveedor proveedor)
+        [Route("RestProveedor")]
+        public async Task<Respuesta> RestProveedor([FromBody]Request request)
         {
             var result = new Respuesta();
             try
             {
-                result = await _proveedor.PostProveedor(proveedor);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._proveedorServices.GetProveedor(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var proveedor = JsonConvert.DeserializeObject<Proveedor>(Convert.ToString(request.Data));
+                                return await this._proveedorServices.PostProveedor(proveedor);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var proveedor = JsonConvert.DeserializeObject<Proveedor>(Convert.ToString(request.Data));
+                                result = await this._proveedorServices.PutProveedor(proveedor);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var proveedor = JsonConvert.DeserializeObject<Proveedor>(Convert.ToString(request.Data));
+                                result = await this._proveedorServices.DeleteProveedor(proveedor);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                log.LogErrorMetodos(this.GetType().Name, "PostProveedor", ex.Message);
+                log.LogErrorMetodos(this.GetType().Name, "RestProveedor", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
             return result;
-        }
-        [HttpPut]
-        [Route("PutProveedor")]
-        public async Task<Respuesta> PutProveedor([FromBody] Proveedor proveedor)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _proveedor.PutProveedor(proveedor);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "PutProveedor", ex.Message);
-            }
-            return result;
-        }
-        [HttpDelete]
-        [Route("DeleteProveedor")]
-        public async Task<Respuesta> DeleteProveedor(int id)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _proveedor.DeleteProveedor(id);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "DeleteProveedor", ex.Message);
-            }
-            return result;
-        }
+        }        
     }
 }

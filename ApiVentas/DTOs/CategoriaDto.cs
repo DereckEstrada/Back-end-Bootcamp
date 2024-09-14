@@ -1,15 +1,13 @@
 ﻿namespace ApiVentas.DTOs
 {
-    public class CategoriaDto
+    public class CategoriaDTO
     {
-        public int CategoriaID { get; set; }
-
-        public string? CategDescrip { get; set; }
-
-        public string? EstadoDesc { get; set; }
-
-        public DateTime? FecHoraReg { get; set; }
-
-        public DateTime? FecHoraAct { get; set; }
+        public int CategoriaId { get; set; }
+        public string? CategoriaDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

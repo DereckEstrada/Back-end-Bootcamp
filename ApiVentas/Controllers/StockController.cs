@@ -3,6 +3,7 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiVentas.Controllers
 {
@@ -10,69 +11,64 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class StockController : ControllerBase
     {
-        private readonly IStockServices _stock;
+        private readonly IStockServices _stockServices;
         private ControlError log = new ControlError();
         public StockController(IStockServices stock)
         {
-            this._stock = stock;
-        }
-        [HttpGet]
-        [Route("GetStock")]
-        public async Task<Respuesta> GetStock(string? opcion, string? data, string? data2)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _stock.GetStock(opcion, data, data2);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "GetStock", ex.Message);
-            }
-            return result;
+            this._stockServices = stock;
         }
         [HttpPost]
-        [Route("PostStock")]
-        public async Task<Respuesta> PostStock([FromBody] Stock stock)
+        [Route("RestStock")]
+        public async Task<Respuesta> RestStock([FromBody] Request request)
         {
             var result = new Respuesta();
             try
             {
-                result = await _stock.PostStock(stock);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._stockServices.GetStock(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var stock = JsonConvert.DeserializeObject<Stock>(Convert.ToString(request.Data));
+                                result = await this._stockServices.PostStock(stock);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var stock = JsonConvert.DeserializeObject<Stock>(Convert.ToString(request.Data));
+                                result = await this._stockServices.PutStock(stock);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var stock = JsonConvert.DeserializeObject<Stock>(Convert.ToString(request.Data));
+                                return await this._stockServices.DeleteStock(stock);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                log.LogErrorMetodos(this.GetType().Name, "PostStock", ex.Message);
-            }
-            return result;
-        }
-        [HttpPut]
-        [Route("PutStock")]
-        public async Task<Respuesta> PutStock([FromBody] Stock stock)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _stock.PutStock(stock);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "PutStock", ex.Message);
-            }
-            return result;
-        }
-        [HttpDelete]
-        [Route("DeleteStock")]
-        public async Task<Respuesta> DeleteStock(int id)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _stock.DeleteStock(id);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "DeleteStock", ex.Message);
+                log.LogErrorMetodos(this.GetType().Name, "RestStock", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
             return result;
         }

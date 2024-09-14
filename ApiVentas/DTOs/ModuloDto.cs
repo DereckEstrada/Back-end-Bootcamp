@@ -2,25 +2,14 @@
 
 namespace ApiVentas.DTOs
 {
-    public partial class ModuloDto
+    public  class ModuloDTO
     {
         public int ModuloId { get; set; }
-
         public string? ModuloDescripcion { get; set; }
-
-        public int? Estado { get; set; }
-
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion{ get; set; }
         public DateTime? FechaHoraReg { get; set; }
-
-        public DateTime? FechaHoraAct { get; set; }
-        public string? UsuReg { get; set; }
-
-        public string? UsuAct { get; set; }
-
-        //public int? UsuIdReg { get; set; }
-
-        //public int? UsuIdAct { get; set; }
-
-        //public virtual ICollection<Opcion> Opcions { get; set; } = new List<Opcion>();
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

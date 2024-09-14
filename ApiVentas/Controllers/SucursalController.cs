@@ -2,6 +2,7 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiVentas.Controllers
 {
@@ -10,86 +11,68 @@ namespace ApiVentas.Controllers
     [Route("[controller]")]
     public class SucursalController : Controller
     {
-        private readonly ISucursal _sucursal;
+        private readonly ISucursalServices _sucursalServices;
         private ControlError log = new ControlError();
-        public SucursalController(ISucursal sucursal)
+        public SucursalController(ISucursalServices sucursal)
         {
-            _sucursal = sucursal;
-        }
-        [HttpGet]
-        [Route("GetSucursal")]
-
-        public async Task<Respuesta> GetSucursal(int? sucursalID, string? sucursalRuc, string? estado)
-        {
-            Respuesta respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _sucursal.GetSucursal(sucursalID, sucursalRuc, estado);
-            }
-            catch (Exception ex)
-            {
-
-                log.LogErrorMetodos("SucursalController", ex.Message, "GetSucursal");
-            }
-            return respuesta;
+            this._sucursalServices = sucursal;
         }
 
         [HttpPost]
-        [Route("PostSucursal")]
+        [Route("RestSucursal")]
 
-        public async Task<Respuesta> PostSucursal([FromBody] Sucursal sucursal)
+        public async Task<Respuesta> RestSucursal([FromBody] Request request)
         {
-            Respuesta respuesta = new Respuesta();
-
+            var result = new Respuesta();
             try
             {
-                respuesta = await _sucursal.PostSucursal(sucursal);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._sucursalServices.GetSucursal(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var sucursal = JsonConvert.DeserializeObject<Sucursal>(Convert.ToString(request.Data));
+                                result = await this._sucursalServices.PostSucursal(sucursal);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var sucursal = JsonConvert.DeserializeObject<Sucursal>(Convert.ToString(request.Data));
+                                result = await this._sucursalServices.PutSucursal(sucursal);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var sucursal = JsonConvert.DeserializeObject<Sucursal>(Convert.ToString(request.Data));
+                                result = await this._sucursalServices.DeleteSucursal(sucursal);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-
-                log.LogErrorMetodos("SucursalController", ex.Message, "PostSucursal");
+                log.LogErrorMetodos(this.GetType().Name, "RestSucursal", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
-            return respuesta;
+            return result;
         }
-
-        [HttpPut]
-        [Route("PutSucursal")]
-
-        public async Task<Respuesta> PutSucursal([FromBody] Sucursal sucursal)
-        {
-            Respuesta respuesta = new Respuesta();
-
-            try
-            {
-                respuesta = await _sucursal.PutSucursal(sucursal);
-            }
-            catch (Exception ex)
-            {
-
-                log.LogErrorMetodos("SucursalController", ex.Message, "PutSucursal");
-            }
-            return respuesta;
-        }
-
-        [HttpDelete]
-        [Route("DeleteSucursal")]
-
-        public async Task<Respuesta> DeleteSucursal(int sucursalID)
-        {
-            Respuesta respuesta = new Respuesta();
-
-            try
-            {
-                respuesta = await _sucursal.DeleteSucursal(sucursalID);
-            }
-            catch (Exception ex)
-            {
-
-                log.LogErrorMetodos("SucursalController", ex.Message, "DeleteSucursal");
-            }
-            return respuesta;
-        }
-
     }
 }

@@ -1,29 +1,20 @@
 ﻿namespace ApiVentas.DTOs
 {
-    public class ClienteDto
+    public class ClienteDTO
     {
-        public int ClienteID { get; set; }
-
-        public string? CliRuc { get; set; }
-
-        public string? CliNombre1 { get; set; }
-
-        public string? CliNombre2 { get; set; }
-
-        public string? CliApellido1 { get; set; }
-
-        public string? CliApellido2 { get; set; }
-
-        public string? CliEmail { get; set; }
-
-        public string? CliTel { get; set; }
-
-        public string? CliDir { get; set; }
-
-        public string? EstadoDesc { get; set; }
-
-        public DateTime? FecHoraReg { get; set; }
-
-        public DateTime? FecHoraAct { get; set; }
+        public int ClienteId { get; set; }
+        public string? ClienteRuc { get; set; }
+        public string? ClienteNombre1 { get; set; }
+        public string? ClienteNombre2 { get; set; }
+        public string? ClienteApellido1 { get; set; }
+        public string? ClienteApellido2 { get; set; }
+        public string? ClienteEmail { get; set; }
+        public string? ClienteTelefono { get; set; }
+        public string? ClienteDireccion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

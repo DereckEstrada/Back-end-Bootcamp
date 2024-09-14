@@ -3,6 +3,7 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiVentas.Controllers
 {
@@ -10,71 +11,66 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class PuntoEmisionSriController : ControllerBase
     {
-        private readonly IPuntoEmisionSriServices _punto;
+        private readonly IPuntoEmisionSriServices _puntoEmisionSriServices;
         private ControlError log = new ControlError();
-        public PuntoEmisionSriController(IPuntoEmisionSriServices punto)
+        public PuntoEmisionSriController(IPuntoEmisionSriServices puntoEmisionSri)
         {
-            this._punto = punto;
-        }
-        [HttpGet]
-        [Route("GetPuntoEmisionSri")]
-        public async Task<Respuesta> GetPuntoEmisionSri(string? opcion, string? data)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _punto.GetPuntoEmisionSri(opcion, data);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "GetPuntoEmisionSri", ex.Message);
-            }
-            return result;
+            this._puntoEmisionSriServices = puntoEmisionSri;
         }
         [HttpPost]
-        [Route("PostPuntoEmisionSri")]
-        public async Task<Respuesta> PostPuntoEmisionSri([FromBody] PuntoEmisionSri emisionSri)
+        [Route("RestPuntoEmisionSri")]
+        public async Task<Respuesta> RestPuntoEmisionSri([FromBody] Request request)
         {
             var result = new Respuesta();
             try
             {
-                result = await _punto.PostPuntoEmisionSri(emisionSri);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._puntoEmisionSriServices.GetPuntoEmisionSri(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var puntoEmisionSri = JsonConvert.DeserializeObject<PuntoEmisionSri>(Convert.ToString(request.Data));
+                                result = await this._puntoEmisionSriServices.PostPuntoEmisionSri(puntoEmisionSri);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var puntoEmisionSri = JsonConvert.DeserializeObject<PuntoEmisionSri>(Convert.ToString(request.Data));
+                                result = await this._puntoEmisionSriServices.PutPuntoEmisionSri(puntoEmisionSri);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var puntoEmisionSri = JsonConvert.DeserializeObject<PuntoEmisionSri>(Convert.ToString(request.Data));
+                                result = await this._puntoEmisionSriServices.DeletePuntoEmisionSri(puntoEmisionSri);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                log.LogErrorMetodos(this.GetType().Name, "PostPuntoEmisionSri", ex.Message);
+                log.LogErrorMetodos(this.GetType().Name, "RestPuntoEmisionSri", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
             return result;
-        }
-        [HttpPut]
-        [Route("PutPuntoEmisionSri")]
-        public async Task<Respuesta> PutPuntoEmisionSri([FromBody] PuntoEmisionSri emisionSri)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _punto.PutPuntoEmisionSri(emisionSri);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "PutPuntoEmisionSri", ex.Message);
-            }
-            return result;
-        }
-        [HttpDelete]
-        [Route("DeletePuntoEmisionSri")]
-        public async Task<Respuesta> DeletePuntoEmisionSri(int id)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _punto.DeletePuntoEmisionSri(id);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "DeletePuntoEmisionSri", ex.Message);
-            }
-            return result;
-        }
+        }       
     }
 }

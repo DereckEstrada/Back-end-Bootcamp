@@ -1,26 +1,19 @@
 ﻿namespace ApiVentas.DTOs
 {
-    public class EmpresaDto
+    public class EmpresaDTO
     {
-        public int EmpID { get; set; }
-
-        public string? EmpRuc { get; set; }
-
-        public string? EmpNombre { get; set; }
-
-        public string? EmpRazon { get; set; }
-
-        public string? EmpDirMatriz { get; set; }
-
-        public string? EmpTelMatriz { get; set; }
-
-        public string? CiudadDescrip { get; set; }
-
-        public string? EstadoDesc { get; set; }
-
-        public DateTime? FecHoraReg { get; set; }
-
-        public DateTime? FecHoraAct { get; set; }
-
+        public int EmpresaId { get; set; }
+        public string? EmpresaRuc { get; set; }
+        public string? EmpresaNombre { get; set; }
+        public string? EmpresaRazon { get; set; }
+        public string? EmpresaDireccionMatriz { get; set; }
+        public string? EmpresaTelefonoMatriz { get; set; }
+        public int? CiudadId { get; set; }
+        public string? CiudadDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion{ get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

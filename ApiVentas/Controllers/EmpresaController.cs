@@ -2,6 +2,7 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiVentas.Controllers
 {
@@ -9,84 +10,68 @@ namespace ApiVentas.Controllers
     [Route("[controller]")]
     public class EmpresaController : Controller
     {
-        private readonly IEmpresa _empresa;
+        private readonly IEmpresaServices _empresaServices;
         private ControlError Log = new ControlError();
 
-        public EmpresaController(IEmpresa empresa)
+        public EmpresaController(IEmpresaServices empresa)
         {
-            this._empresa = empresa;
-        }
-
-        [HttpGet]
-        [Route("GetEmpresa")]
-        public async Task<Respuesta> GetEmpresa(int empresaID, string? empresaNombre, string? ruc, int? ciudadID)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _empresa.GetEmpresa(empresaID, empresaNombre, ruc, ciudadID);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("EmpresaController", "GetEmpresa", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-            }
-            return respuesta;
+            this._empresaServices= empresa;
         }
 
         [HttpPost]
-        [Route("PostEmpresa")]
-        public async Task<Respuesta> PostEmpresa([FromBody] Empresa empresa)
+        [Route("RestEmpresa")]
+        public async Task<Respuesta> RestEmpresa([FromBody] Request request)
         {
-            var respuesta = new Respuesta();
+            var result = new Respuesta();
             try
             {
-                respuesta = await _empresa.PostEmpresa(empresa);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._empresaServices.GetEmpresa(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var empresa = JsonConvert.DeserializeObject<Empresa>(Convert.ToString(request.Data));
+                                result = await this._empresaServices.PostEmpresa(empresa);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var empresa = JsonConvert.DeserializeObject<Empresa>(Convert.ToString(request.Data));
+                                result = await this._empresaServices.PutEmpresa(empresa);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var empresa = JsonConvert.DeserializeObject<Empresa>(Convert.ToString(request.Data));
+                                result = await this._empresaServices.DeleteEmpresa(empresa);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                Log.LogErrorMetodos("EmpresaController", "PostEmpresa", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos(this.GetType().Name, "RestEmpresa", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
-            return respuesta;
-        }
-
-        [HttpPut]
-        [Route("PutEmpresa")]
-        public async Task<Respuesta> PutEmpresa([FromBody] Empresa empresa)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _empresa.PutEmpresa(empresa);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("EmpresaController", "PutEmpresa", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-            }
-            return respuesta;
-        }
-
-        [HttpPut]
-        [Route("DeleteEmpresa")]
-        public async Task<Respuesta> DeleteEmpresa([FromBody] Empresa empresa)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _empresa.DeleteEmpresa(empresa);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("EmpresaController", "DeleteEmpresa", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-            }
-            return respuesta;
+            return result;
         }
     }
 }

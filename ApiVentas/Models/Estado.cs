@@ -37,6 +37,8 @@ public partial class Estado
 
     public virtual ICollection<Estado> InverseEstadoFkNavigation { get; set; } = new List<Estado>();
 
+    public virtual ICollection<ModuloOpcionesBusquedum> ModuloOpcionesBusqueda { get; set; } = new List<ModuloOpcionesBusquedum>();
+
     public virtual ICollection<Modulo> Modulos { get; set; } = new List<Modulo>();
 
     public virtual ICollection<MovimientoCab> MovimientoCabs { get; set; } = new List<MovimientoCab>();
@@ -44,6 +46,8 @@ public partial class Estado
     public virtual ICollection<MovimientoDetPago> MovimientoDetPagos { get; set; } = new List<MovimientoDetPago>();
 
     public virtual ICollection<MovimientoDetProducto> MovimientoDetProductos { get; set; } = new List<MovimientoDetProducto>();
+
+    public virtual ICollection<OpcionesBusquedum> OpcionesBusqueda { get; set; } = new List<OpcionesBusquedum>();
 
     public virtual ICollection<Opcion> Opcions { get; set; } = new List<Opcion>();
 

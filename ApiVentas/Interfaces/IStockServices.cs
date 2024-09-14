@@ -5,9 +5,9 @@ namespace ApiVentas.Interfaces
 {
     public interface IStockServices
     {
-        Task<Respuesta> GetStock(string? opcion, string? data, string? data2);
+        Task<Respuesta> GetStock(DataQuery dataQuery);
         Task<Respuesta> PostStock(Stock stock);
         Task<Respuesta> PutStock(Stock stock);
-        Task<Respuesta> DeleteStock(int id);
+        Task<Respuesta> DeleteStock(Stock stock);
     }
 }

@@ -2,90 +2,75 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 namespace ApiVentas.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class ClienteController : Controller
     {
-        private readonly ICliente _cliente;
+        private readonly IClienteServices _clienteServices;
         private ControlError Log = new ControlError();
 
-        public ClienteController(ICliente cliente)
+        public ClienteController(IClienteServices cliente)
         {
-            this._cliente = cliente;
-        }
-
-        [HttpGet]
-        [Route("GetCliente")]
-        public async Task<Respuesta> GetCliente(double clienteID, string? clienteNombre, double cedula)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _cliente.GetCliente(clienteID, clienteNombre, cedula);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("ClienteController", "GetCliente", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-            }
-            return respuesta;
+            this._clienteServices = cliente;
         }
 
         [HttpPost]
-        [Route("PostCliente")]
-        public async Task<Respuesta> PostCliente([FromBody] Cliente cliente)
+        [Route("RestCliente")]
+        public async Task<Respuesta> RestCliente([FromBody] Request request)
         {
-            var respuesta = new Respuesta();
+            var result = new Respuesta();
             try
             {
-                respuesta = await _cliente.PostCliente(cliente);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._clienteServices.GetCliente(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var cliente = JsonConvert.DeserializeObject<Cliente>(Convert.ToString(request.Data));
+                                result = await this._clienteServices.PostCliente(cliente);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var cliente = JsonConvert.DeserializeObject<Cliente>(Convert.ToString(request.Data));
+                                result = await this._clienteServices.PutCliente(cliente);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var cliente = JsonConvert.DeserializeObject<Cliente>(Convert.ToString(request.Data));
+                                result = await this._clienteServices.DeleteCliente(cliente);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                Log.LogErrorMetodos("ClienteController", "PostCliente", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
+                Log.LogErrorMetodos(this.GetType().Name, "RestCliente", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
-            return respuesta;
-        }
-
-        [HttpPut]
-        [Route("PutCliente")]
-        public async Task<Respuesta> PutCliente([FromBody] Cliente cliente)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _cliente.PutCliente(cliente);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("ClienteController", "PutCliente", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-            }
-            return respuesta;
-        }
-
-        [HttpPut]
-        [Route("DeleteCliente")]
-        public async Task<Respuesta> DeleteCliente([FromBody] Cliente cliente)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _cliente.DeleteCliente(cliente);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("ClienteController", "DeleteCliente", ex.Message);
-                respuesta.Cod = "999";
-                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el departamento de sistemas";
-            }
-            return respuesta;
+            return result;
         }
     }
 }

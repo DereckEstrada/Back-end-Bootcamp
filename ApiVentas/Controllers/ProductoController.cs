@@ -4,6 +4,7 @@ using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ApiVentas.Controllers
@@ -12,71 +13,66 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class ProductoController : ControllerBase
     {
-        private readonly IProductoServices _producto;
+        private readonly IProductoServices _productoServices;
         private ControlError log = new ControlError();
         public ProductoController(IProductoServices producto)
         {
-            this._producto = producto;
-        }
-        [HttpGet]
-        [Route("GetProducto")]
-        public async Task<Respuesta> GetProducto(string? opcion, string? data, string? data2)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _producto.GetProducto(opcion, data, data2);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "GetProducto", ex.Message);
-            }
-            return result;
+            this._productoServices = producto;
         }
         [HttpPost]
-        [Route("PostProducto")]
-        public async Task<Respuesta> PostProducto([FromBody] Producto producto)
+        [Route("RestProducto")]
+        public async Task<Respuesta> RestProducto([FromBody]Request request)
         {
             var result = new Respuesta();
             try
             {
-                result = await _producto.PostProducto(producto);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._productoServices.GetProducto(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var producto = JsonConvert.DeserializeObject<Producto>(Convert.ToString(request.Data));
+                                result = await this._productoServices.PostProducto(producto);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var producto = JsonConvert.DeserializeObject<Producto>(Convert.ToString(request.Data));
+                                result = await this._productoServices.PutProducto(producto);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var producto = JsonConvert.DeserializeObject<Producto>(Convert.ToString(request.Data));
+                                result = await this._productoServices.DeleteProducto(producto);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                log.LogErrorMetodos(this.GetType().Name, "PostProducto", ex.Message);
+                log.LogErrorMetodos(this.GetType().Name, "RestProducto", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
             return result;
-        }
-        [HttpPut]
-        [Route("PutProducto")]
-        public async Task<Respuesta> PutProducto([FromBody] Producto producto)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _producto.PutProducto(producto);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "PutProducto", ex.Message);
-            }
-            return result;
-        }
-        [HttpDelete]
-        [Route("DeleteProducto")]
-        public async Task<Respuesta> DeleteProducto(int id)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _producto.DeleteProducto(id);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "DeleteProducto", ex.Message);
-            }
-            return result;
-        }
+        }        
     }
 }

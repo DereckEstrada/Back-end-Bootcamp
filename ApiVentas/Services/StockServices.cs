@@ -2,93 +2,62 @@
 using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
+using ApiVentas.Utilitarios.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
 
 namespace ApiVentas.Services
 {
-    public class StockServices : IStockServices
+    public class StockServices : IStockServices, IServices<Stock>
     {
         private BaseErpContext _context;
-        private StockDTO dto = new StockDTO();
         private ControlError log = new ControlError();
-        private DynamicEmpty empty = new DynamicEmpty();
+        private DynamicEmpty dynamicEmpty = new DynamicEmpty();
         public StockServices(BaseErpContext context)
         {
             this._context = context;
         }
-        public async Task<Respuesta> DeleteStock(int id)
+
+        public async Task<Respuesta> GetStock(DataQuery dataQuery)
         {
             var result = new Respuesta();
             try
             {
-                var stockDelete = await _context.Stocks.FirstOrDefaultAsync(x => x.StockId == id);
-                if (stockDelete != null)
-                {
-                    stockDelete.EstadoId = 2;
-                    _context.Stocks.Update(stockDelete);
-                    await _context.SaveChangesAsync();
-                }
-                result.Cod = stockDelete != null ? "000" : "111";
-                result.Mensaje = stockDelete != null ? "OK" : $"No se encontro registro con id: '{id}'";
 
+                result.Data = await _context.Stocks
+                                            .Include(stock => stock.Empresa)
+                                            .Include(stock => stock.Sucursal)
+                                            .Include(stock => stock.Bodega)
+                                            .Include(stock => stock.Prod)
+                                            .Include(stock => stock.Estado)
+                                            .Where(StockDictionary.GetExpression(dataQuery))
+                                            .Select(stock => new StockDTO
+                                            {
+                                                StockId = stock.StockId,
+                                                EmpresaId = stock.EmpresaId,
+                                                EmpresaDescripcion = stock.Empresa.EmpresaNombre,
+                                                SucursalId = stock.SucursalId,
+                                                SucursalDescripcion = stock.Sucursal.SucursalNombre,
+                                                BodegaId = stock.BodegaId,
+                                                BodegaDescripcion = stock.Bodega.BodegaNombre,
+                                                ProdId = stock.ProdId,
+                                                ProdDescripcion = stock.Prod.ProdDescripcion,
+                                                CantidadStock = stock.CantidadStock,
+                                                EstadoId = stock.EstadoId,
+                                                EstadoDescripcion = stock.Estado.EstadoDescrip,
+                                                FechaHoraReg = stock.FechaHoraReg,
+                                                UsuIdReg = stock.UsuIdReg,
+                                                UsuRegName = stock.UsuIdRegNavigation.UsuNombre,
+                                            }).ToListAsync();
+
+                result.Code = dynamicEmpty.IsEmpty(result.Data) ? "204" : "200";
+                result.Message = dynamicEmpty.IsEmpty(result.Data) ? $"No se encontro registro con opcion:'{dataQuery.OpcionData}' con data: '{dataQuery.DataFirstQuery}'" : "Ok";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
-                log.LogErrorMetodos(this.GetType().Name, "DeleteStock", ex.Message);
-
-            }
-            return result;
-        }
-
-        public async Task<Respuesta> GetStock(string? opcion, string? Data, string? data2)
-        {
-            var result = new Respuesta();
-            Expression<Func<StockDTO, bool>> query = dto.DictionaryStock(opcion, Data, data2);
-            try
-            {
-
-                if (query != null)
-                {
-                    result.Data = await (from stock in _context.Stocks
-                                         join e in _context.Empresas on stock.EmpresaId equals e.EmpresaId
-                                         join s in _context.Sucursals on stock.SucursalId equals s.SucursalId
-                                         join b in _context.Bodegas on stock.BodegaId equals b.BodegaId
-                                         join p in _context.Productos on stock.ProdId equals p.ProdId
-                                         join userReg in _context.Usuarios on stock.UsuIdReg equals userReg.UsuId
-                                         join est in _context.Estados on stock.EstadoId equals est.EstadoId 
-                                         //join userAct in _context.Usuarios on stock.UsuIdAct equals userAct.UsuId
-                                         select new StockDTO
-                                         {
-                                             StockId = stock.StockId,
-                                             EmpresaId = e.EmpresaId,
-                                             EmpresaDescrip = e.EmpresaNombre,
-                                             SucursalId = stock.SucursalId,
-                                             SucursalDescrip = s.SucursalNombre,
-                                             BodegaId = stock.BodegaId,
-                                             BodegaDescrip = b.BodegaNombre,
-                                             ProdId = stock.ProdId,
-                                             ProdDescrip = p.ProdDescripcion,
-                                             EstadoId = stock.EstadoId,
-                                             EstadoDescrip=est.EstadoDescrip,   
-                                             FechaHoraReg = stock.FechaHoraReg,
-                                             FechaHoraAct = stock.FechaHoraAct,
-                                             UsuIdReg = stock.UsuIdReg,
-                                             UsuRegDescrip = userReg.UsuNombre,
-                                             UsuIdAct = stock.UsuIdAct,
-                                             //UsuActDescrip = userAct.UsuNombre                              
-                                         }).Where(query).ToListAsync();
-                }
-                result.Cod = empty.IsEmpty(result.Data) ? "111" : "000";
-                result.Mensaje = empty.IsEmpty(result.Data) ? $"No se encontro registro con opcion: '{opcion}' con Data: '{Data}'" : "OK";
-            }
-            catch (Exception ex)
-            {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "GetStock", ex.Message);
 
             }
@@ -100,22 +69,21 @@ namespace ApiVentas.Services
             var result = new Respuesta();
             try
             {
-                var id = await _context.Stocks.OrderByDescending(x => x.StockId).Select(x => x.StockId).FirstOrDefaultAsync() + 1;
-                stock.StockId = id;
+                var query = await _context.Stocks.OrderByDescending(stockDB => stockDB.StockId)
+                                                    .Select(idDB => idDB.StockId).FirstOrDefaultAsync() + 1;
+                stock.StockId = query;
                 stock.FechaHoraReg = DateTime.Now;
-                var validar = stock.UsuIdReg != null;
-                if (validar)
-                {
-                    _context.Stocks.Add(stock);
-                    await _context.SaveChangesAsync();
-                }
-                result.Cod = validar ? "000" : "111";
-                result.Mensaje = validar ? "Ok" : "No se puede ingresar registro sin datos del usuario";
+
+                _context.Stocks.Add(stock);
+                await _context.SaveChangesAsync();
+
+                result.Code = "200";
+                result.Message = "Ok";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "PostStock", ex.Message);
 
             }
@@ -127,29 +95,47 @@ namespace ApiVentas.Services
             var result = new Respuesta();
             try
             {
-                var validar = await _context.Stocks.AnyAsync(x => x.StockId == stock.StockId);
-                var usuarioEdit = stock.UsuIdAct;
-                if (validar && usuarioEdit != null)
+                var existStock = await _context.Stocks.AnyAsync(stockDB => stockDB.StockId == stock.StockId);
+
+                if (existStock)
                 {
-                    result.Cod = "000";
-                    result.Mensaje = "OK";
-                    stock.UsuIdReg = await _context.Stocks.Where(x => x.StockId == stock.StockId).Select(x => x.UsuIdReg).FirstOrDefaultAsync();
-                    stock.FechaHoraReg = await _context.Stocks.Where(x => x.StockId == stock.StockId).Select(x => x.FechaHoraReg).FirstOrDefaultAsync();
                     stock.FechaHoraAct = DateTime.Now;
+
                     _context.Stocks.Update(stock);
                     await _context.SaveChangesAsync();
+                    result.Data = stock;
                 }
-                else
-                {
-                    result.Cod = "111";
-                    result.Mensaje = usuarioEdit != null ? $"No se encontro registro con id: '{stock.StockId}'" : "No se puede actualizar registro sin los datos del usuario";
-                }
+                result.Code = existStock ? "200" : "204";
+                result.Message = existStock ? "Ok" : $"No existe registro con id: '{stock.StockId}'";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "PutStock", ex.Message);
+            }
+            return result;
+        }
+        public async Task<Respuesta> DeleteStock(Stock stock)
+        {
+            var result = new Respuesta();
+            try
+            {
+                var existStock = await _context.Stocks.AnyAsync(stockDB => stockDB.StockId == stock.StockId);
+                if (existStock)
+                {
+                    stock.EstadoId = 2;
+                    _context.Stocks.Update(stock);
+                    await _context.SaveChangesAsync();
+                }
+                result.Code = existStock ? "200" : "204";
+                result.Message = existStock ? "Ok" : $"No existe registro con id: '{stock.StockId}'";
+            }
+            catch (Exception ex)
+            {
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
+                log.LogErrorMetodos(this.GetType().Name, "DeleteStock", ex.Message);
             }
             return result;
         }

@@ -1,15 +1,13 @@
 ﻿namespace ApiVentas.DTOs
 {
-    public class FormaPagoDto
+    public class FormaPagoDTO
     {
-        public int FpagoID { get; set; }
-
-        public string? FpagoDescrip { get; set; }
-
-        public string? EstadoDesc { get; set; }
-
-        public DateTime? FecHoraReg { get; set; }
-
-        public DateTime? FecHoraAct { get; set; }
+        public int FpagoId { get; set; }
+        public string? FpagoDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

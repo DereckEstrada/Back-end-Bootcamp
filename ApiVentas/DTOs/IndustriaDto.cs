@@ -1,15 +1,13 @@
 ﻿namespace ApiVentas.DTOs
 {
-    public class IndustriaDto
+    public class IndustriaDTO
     {
-        public int IndustriaID { get; set; }
-
-        public string? IndustriaDescrip { get; set; }
-
-        public string? EstadoDesc { get; set; }
-
-        public DateTime? FecHoraReg { get; set; }
-
-        public DateTime? FecHoraAct { get; set; }
+        public int IndustriaId { get; set; }
+        public string? IndustriaDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

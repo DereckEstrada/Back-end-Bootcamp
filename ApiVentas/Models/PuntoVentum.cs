@@ -27,7 +27,7 @@ public partial class PuntoVentum
 
     public virtual ICollection<MovimientoCab> MovimientoCabs { get; set; } = new List<MovimientoCab>();
 
-    public virtual PuntoEmisionSri Puntovta { get; set; } = null!;
+    public virtual PuntoEmisionSri? PuntoEmision { get; set; }
 
     public virtual Sucursal? Sucursal { get; set; }
 

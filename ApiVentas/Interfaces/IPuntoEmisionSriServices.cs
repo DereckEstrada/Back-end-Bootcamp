@@ -5,9 +5,9 @@ namespace ApiVentas.Interfaces
 {
     public interface IPuntoEmisionSriServices
     {
-        Task<Respuesta> GetPuntoEmisionSri(string? opcion, string? data);
+        Task<Respuesta> GetPuntoEmisionSri(DataQuery dataQuery);
         Task<Respuesta> PostPuntoEmisionSri(PuntoEmisionSri emisionSri);
         Task<Respuesta> PutPuntoEmisionSri(PuntoEmisionSri emisionSri);
-        Task<Respuesta> DeletePuntoEmisionSri(int id);
+        Task<Respuesta> DeletePuntoEmisionSri(PuntoEmisionSri emisionSri);
     }
 }

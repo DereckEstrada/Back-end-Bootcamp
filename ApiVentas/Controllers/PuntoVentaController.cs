@@ -3,6 +3,7 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiVentas.Controllers
 {
@@ -10,71 +11,66 @@ namespace ApiVentas.Controllers
     [ApiController]
     public class PuntoVentaController : ControllerBase
     {
-        private readonly IPuntoVentaServices _puntoVenta;
+        private readonly IPuntoVentaServices _puntoVentaServices;
         private ControlError log = new ControlError();
         public PuntoVentaController(IPuntoVentaServices puntoVenta)
         {
-            this._puntoVenta = puntoVenta;
+            this._puntoVentaServices = puntoVenta;
         }
         [HttpGet]
-        [Route("GetPuntoVenta")]
-        public async Task<Respuesta> GetPuntoVenta(string? opcion, string? data, string? data2)
+        [Route("RestPuntoVenta")]
+        public async Task<Respuesta> RestPuntoVenta(Request request)
         {
             var result = new Respuesta();
             try
             {
-                result = await _puntoVenta.GetPuntoVenta(opcion, data);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result = await this._puntoVentaServices.GetPuntoVenta(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var puntoVenta = JsonConvert.DeserializeObject<PuntoVentum>(Convert.ToString(request.Data));
+                                result = await this._puntoVentaServices.PostPuntoVenta(puntoVenta);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var puntoVenta = JsonConvert.DeserializeObject<PuntoVentum>(Convert.ToString(request.Data));
+                                result = await this._puntoVentaServices.PutPuntoVenta(puntoVenta);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var puntoVenta = JsonConvert.DeserializeObject<PuntoVentum>(Convert.ToString(request.Data));
+                                result = await this._puntoVentaServices.DeletePuntoVenta(puntoVenta);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                log.LogErrorMetodos(this.GetType().Name, "GetPuntoVenta", ex.Message);
+                log.LogErrorMetodos(this.GetType().Name, "RestPuntoVenta", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
             return result;
-        }
-        [HttpPost]
-        [Route("PostPuntoVenta")]
-        public async Task<Respuesta> PostPuntoVenta([FromBody] PuntoVentum puntoVenta)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _puntoVenta.PostPuntoVenta(puntoVenta);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "PostPuntoVenta", ex.Message);
-            }
-            return result;
-        }
-        [HttpPut]
-        [Route("PutPuntoVenta")]
-        public async Task<Respuesta> PutPuntoVenta([FromBody] PuntoVentum puntoVenta)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _puntoVenta.PutPuntoVenta(puntoVenta);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "PutPuntoVenta", ex.Message);
-            }
-            return result;
-        }
-        [HttpDelete]
-        [Route("DeletePuntoVenta")]
-        public async Task<Respuesta> DeletePuntoVenta(int id)
-        {
-            var result = new Respuesta();
-            try
-            {
-                result = await _puntoVenta.DeletePuntoVenta(id);
-            }
-            catch (Exception ex)
-            {
-                log.LogErrorMetodos(this.GetType().Name, "DeletePuntoVenta", ex.Message);
-            }
-            return result;
-        }
+        }  
     }
 }

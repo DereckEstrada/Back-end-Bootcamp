@@ -31,7 +31,7 @@ public partial class PuntoEmisionSri
 
     public virtual Estado? Estado { get; set; }
 
-    public virtual PuntoVentum? PuntoVentum { get; set; }
+    public virtual ICollection<PuntoVentum> PuntoVenta { get; set; } = new List<PuntoVentum>();
 
     public virtual Sucursal? Sucursal { get; set; }
 

@@ -2,7 +2,9 @@
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ApiVentas.Controllers
 {
@@ -10,75 +12,68 @@ namespace ApiVentas.Controllers
     [Route("[controller]")]
     public class BodegaController : Controller
     {
-        private readonly IBodega _bodega;
+        private readonly IBodegaServices _bodegaServices;
         private ControlError Log = new ControlError();
 
-        public BodegaController(IBodega bodega)
+        public BodegaController(IBodegaServices bodega)
         {
-            this._bodega = bodega;
-        }
-
-        [HttpGet]
-        [Route("GetBodega")]
-        public async Task<Respuesta> GetBodega(int bodegaID, string? bodegaNombre, string? bodegaTelefono)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _bodega.GetBodega(bodegaID, bodegaNombre, bodegaTelefono);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("BodegaController", "GetBodega", ex.Message);
-            }
-            return respuesta;
+            this._bodegaServices = bodega;
         }
 
         [HttpPost]
-        [Route("PostBodega")]
-        public async Task<Respuesta> PostBodega([FromBody] Bodega bodega)
+        [Route("RestBodega")]
+        public async Task<Respuesta> GetBodega([FromBody] Request request)
         {
-            var respuesta = new Respuesta();
+            var result = new Respuesta();
             try
             {
-                respuesta = await _bodega.PostBodega(bodega);
+                switch (request.Operacion)
+                {
+                    case "GET":
+                        {
+                            if (true)
+                            {
+                                var dataQuery = JsonConvert.DeserializeObject<DataQuery>(Convert.ToString(request.Data));
+                                result= await this._bodegaServices.GetBodega(dataQuery);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        {
+                            if (true)
+                            {
+                                var bodega = JsonConvert.DeserializeObject<Bodega>(Convert.ToString(request.Data));
+                                result= await this._bodegaServices.PostBodega(bodega);
+                            }
+                        }
+                        break;
+                    case "PUT":
+                        {
+                            if (true)
+                            {
+                                var bodega = JsonConvert.DeserializeObject<Bodega>(Convert.ToString(request.Data));
+                                result = await this._bodegaServices.PutBodega(bodega);
+                            }
+                        }
+                        break;
+                    case "DELETE":
+                        {
+                            if (true)
+                            {
+                                var bodega = JsonConvert.DeserializeObject<Bodega>(Convert.ToString(request.Data));
+                                result = await this._bodegaServices.DeleteBodega(bodega);
+                            }
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                Log.LogErrorMetodos("BodegaController", "PostBodega", ex.Message);
+                Log.LogErrorMetodos(this.GetType().Name, "RestBodega", ex.Message);
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
-            return respuesta;
-        }
-        [HttpPut]
-        [Route("PutBodega")]
-        public async Task<Respuesta> PutBodega([FromBody] Bodega bodega)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _bodega.PutBodega(bodega);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("BodegaController", "PutBodega", ex.Message);
-            }
-            return respuesta;
-        }
-
-        [HttpPut]
-        [Route("DeleteBodega")]
-        public async Task<Respuesta> DeleteBodega([FromBody] Bodega bodega)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _bodega.DeleteBodega(bodega);
-            }
-            catch (Exception ex)
-            {
-                Log.LogErrorMetodos("BodegaController", "DeleteBodega", ex.Message);
-            }
-            return respuesta;
-        }
+            return result;
+        }      
     }
 }

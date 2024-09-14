@@ -2,56 +2,29 @@
 
 namespace ApiVentas.DTOs
 {
-    public partial class MovimientoDetPagoDto
+    public  class MovimientoDetPagoDTO
     {
         public int MovidetPagoId { get; set; }
-
         public int? MovicabId { get; set; }
-
+        public string? MovicabDescripcion { get; set; }
         public int? FpagoId { get; set; }
-
+        public string? FpagoDescripcion { get; set; }
         public decimal? ValorPagado { get; set; }
-
         public int? IndustriaId { get; set; }
-
+        public string? IndustriaDescripcion { get; set; }
         public string? Lote { get; set; }
-
         public string? Voucher { get; set; }
-
         public int? TarjetacredId { get; set; }
-
+        public string? TarjetacredDescripcion { get; set; }
         public int? BancoId { get; set; }
-
         public int? ComprobanteId { get; set; }
-
         public DateTime? FechaPago { get; set; }
-
-        public int? EstadoId { get; set; }
-
-        public int? UsuIdReg { get; set; }
-
-        public DateTime? FechaHoraReg { get; set; }
-
-        public DateTime? FechaHoraAct { get; set; }
-
-        public int? UsuIdAct { get; set; }
-
         public int? ClienteId { get; set; }
-
-        //public virtual Cliente? Cliente { get; set; }
-
-        //public virtual Estado? Estado { get; set; }
-
-        //public virtual FormaPago? Fpago { get; set; }
-
-        //public virtual Industrium? Industria { get; set; }
-
-        //public virtual MovimientoCab? Movicab { get; set; }
-
-        //public virtual TarjetaCredito? Tarjetacred { get; set; }
-
-        //public virtual Usuario? UsuIdActNavigation { get; set; }
-
-        //public virtual Usuario? UsuIdRegNavigation { get; set; }
+        public string? ClienteDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

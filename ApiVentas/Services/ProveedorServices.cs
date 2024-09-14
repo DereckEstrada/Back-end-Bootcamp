@@ -2,6 +2,7 @@
 using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
+using ApiVentas.Utilitarios.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq.Expressions;
@@ -9,143 +10,129 @@ using System.Threading.Tasks.Dataflow;
 
 namespace ApiVentas.Services
 {
-    public class ProveedorServices: IProveedorServices
+    public class ProveedorServices : IProveedorServices, IServices<Proveedor>
     {
         private BaseErpContext _context;
-        private ProveedorDTO dto = new ProveedorDTO();
         private ControlError log = new ControlError();
-        private DynamicEmpty empty = new DynamicEmpty();
+        private DynamicEmpty dynamicEmpty = new DynamicEmpty();
         public ProveedorServices(BaseErpContext context)
         {
             this._context = context;
         }
-        public async Task<Respuesta> DeleteProveedor(int id)
+        public async Task<Respuesta> GetProveedor(DataQuery dataQuery)
         {
             var result = new Respuesta();
             try
             {
-                var proveedorDelete = await _context.Proveedors.FirstOrDefaultAsync(x => x.ProvId== id);
-                if (proveedorDelete != null)
-                {
-                    proveedorDelete.EstadoId = 2;
-                    _context.Proveedors.Update(proveedorDelete);
-                    await _context.SaveChangesAsync();
-                }
-                result.Cod = proveedorDelete != null ? "000" : "111";
-                result.Mensaje = proveedorDelete != null ? "OK" : $"No se encontro registro con id: '{id}'";
+                result.Data =await _context.Proveedors
+                                     .Include(proveedor => proveedor.Ciudad)
+                                     .Include(proveedor => proveedor.Estado)
+                                     .Include(proveedor => proveedor.UsuIdRegNavigation)
+                                     .Include(proveedor => proveedor.Ciudad)
+                                     .Where(ProveedorDictionary.GetExpression(dataQuery))
+                                     .Select(proveedor => new ProveedorDTO
+                                     {
+                                         ProvId = proveedor.ProvId,
+                                         ProvRuc = proveedor.ProvRuc,
+                                         ProvNomComercial = proveedor.ProvNomComercial,
+                                         ProvRazon = proveedor.ProvRazon,
+                                         ProvDireccion = proveedor.ProvDireccion,
+                                         ProvTelefono = proveedor.ProvTelefono,
+                                         CiudadId = proveedor.CiudadId,
+                                         CiudadDescripcion = proveedor.Ciudad.CiudadNombre,
+                                         EstadoId = proveedor.EstadoId,
+                                         EstadoDescripcion = proveedor.Estado.EstadoDescrip,
+                                         FechaHoraReg = proveedor.FechaHoraReg,
+                                         UsuIdReg = proveedor.UsuIdReg,
+                                         UsuRegName = proveedor.UsuIdRegNavigation.UsuNombre,
+                                     }).ToListAsync();
 
+                result.Code = dynamicEmpty.IsEmpty(result.Data) ? "204" : "200";
+                result.Message = dynamicEmpty.IsEmpty(result.Data) ? $"No se encontro registro con opcion:                              '{dataQuery.OpcionData}' con data: '{dataQuery.DataFirstQuery}'" : "Ok";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
-                log.LogErrorMetodos(this.GetType().Name, "DeleteProveedor", ex.Message);
-
-            }
-            return result;
-        }
-
-        public async Task<Respuesta> GetProveedor(string? opcion, string? Data)
-        {
-            var result = new Respuesta();
-            Expression<Func<ProveedorDTO, bool>> query = dto.DictionaryProveedor(opcion, Data);
-            try
-            {
-                if (query != null)
-                {
-                    result.Data = await (from prove in _context.Proveedors
-                                         join c in _context.Ciudads on prove.CiudadId equals c.CiudadId
-                                         join userReg in _context.Usuarios on prove.UsuIdReg equals userReg.UsuId
-                                         join est in _context.Estados on prove.EstadoId equals est.EstadoId
-                                         //join userAct in _context.Usuarios on prove.UsuIdAct equals userAct.UsuId
-                                         select new ProveedorDTO
-                                         {
-                                             ProvId = prove.ProvId,
-                                             ProvRuc=prove.ProvRuc,
-                                             ProvNomComercial=prove.ProvNomComercial,
-                                             ProvRazon=prove.ProvRazon,
-                                             ProvDireccion=prove.ProvDireccion,
-                                             ProvTelefono=prove.ProvTelefono,
-                                             CiudadId=prove.CiudadId,
-                                             CiudadDescrip=c.CiudadNombre,
-                                             EstadoId=prove.EstadoId,
-                                             EstadoDescrip=est.EstadoDescrip,
-                                             FechaHoraReg=prove.FechaHoraReg,
-                                             FechaHoraAct=prove.FechaHoraAct,
-                                             UsuIdReg=prove.UsuIdReg,
-                                             UsuRegDescrip=userReg.UsuNombre,
-                                             UsuIdAct=prove.UsuIdAct,   
-                                             //UsuActDescrip=userAct.UsuNombre   
-                                         }).Where(query).ToListAsync();
-                }
-                result.Cod = empty.IsEmpty(result.Data) ? "111" : "000";
-                result.Mensaje = empty.IsEmpty(result.Data) ? $"No se encontro registro con opcion: '{opcion}' con Data: '{Data}'" : "OK";
-            }
-            catch (Exception ex)
-            {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "GetProveedor", ex.Message);
 
             }
             return result;
         }
-
         public async Task<Respuesta> PostProveedor(Proveedor proveedor)
         {
             var result = new Respuesta();
             try
             {
-                var id = await _context.Proveedors.OrderByDescending(x => x.ProvId).Select(x => x.ProvId).FirstOrDefaultAsync() + 1;
-                proveedor.ProvId= id;
+                var query = await _context.Proveedors.OrderByDescending(proveedorDB => proveedorDB.ProvId)
+                                                    .Select(idDB => idDB.ProvId).FirstOrDefaultAsync() + 1;
+                proveedor.ProvId = query;
                 proveedor.FechaHoraReg = DateTime.Now;
-                var validar = proveedor.UsuIdReg != null;
-                if (validar)
-                {
-                    _context.Proveedors.Add(proveedor);
-                    await _context.SaveChangesAsync();
-                }
-                result.Cod = validar ? "000" : "111";
-                result.Mensaje = validar ? "Ok" : "No se puede ingresar registro sin datos del usuario";
+
+                _context.Proveedors.Add(proveedor);
+                await _context.SaveChangesAsync();
+
+                result.Code = "200";
+                result.Data = proveedor;
+                result.Message = "Ok";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "PostProveedor", ex.Message);
 
             }
             return result;
         }
-
         public async Task<Respuesta> PutProveedor(Proveedor proveedor)
         {
             var result = new Respuesta();
             try
             {
-                var validar = await _context.Proveedors.AnyAsync(x => x.ProvId== proveedor.ProvId);
-                var usuarioEdit = proveedor.UsuIdAct;
-                if (validar && usuarioEdit != null)
+                var existProveedor = await _context.Proveedors.AnyAsync(proveedorDB=> proveedorDB.ProvId == proveedor.ProvId);
+                if (existProveedor)
                 {
-                    result.Cod = "000";
-                    result.Mensaje = "OK";
-                    proveedor.UsuIdReg = await _context.Proveedors.Where(x => x.ProvId== proveedor.ProvId).Select(x => x.UsuIdReg).FirstOrDefaultAsync();
-                    proveedor.FechaHoraReg = await _context.Proveedors.Where(x => x.ProvId == proveedor.ProvId).Select(x => x.FechaHoraReg).FirstOrDefaultAsync();
                     proveedor.FechaHoraAct = DateTime.Now;
+
                     _context.Proveedors.Update(proveedor);
                     await _context.SaveChangesAsync();
+                    result.Data = proveedor;
                 }
-                else
-                {
-                    result.Cod = "111";
-                    result.Mensaje = usuarioEdit != null ? $"No se encontro registro con id: '{proveedor.ProvId}'" : "No se puede actualizar registro sin los datos del usuario";
-                }
+                result.Code = existProveedor ? "200" : "204";
+                result.Message = existProveedor ? "Ok" : $"No existe registro con id: '{proveedor.ProvId}'";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "PutProveedor", ex.Message);
+            }
+            return result;
+        }
+        public async Task<Respuesta> DeleteProveedor(Proveedor proveedor)
+        {
+            var result = new Respuesta();
+            try
+            {
+                var existProveedor = await _context.Proveedors.AnyAsync(proveedorDB => proveedorDB.ProvId == proveedor.ProvId);
+                if (existProveedor)
+                {
+                    proveedor.FechaHoraAct = DateTime.Now;
+                    proveedor.EstadoId = 2;
+
+                    _context.Proveedors.Update(proveedor);
+                    await _context.SaveChangesAsync();
+                }
+                result.Code = existProveedor ? "200" : "204";
+                result.Message = existProveedor ? "Ok" : $"No existe registro con id: '{proveedor.ProvId}'";
+
+            }
+            catch (Exception ex)
+            {
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
+                log.LogErrorMetodos(this.GetType().Name, "DeleteProveedor", ex.Message);
             }
             return result;
         }

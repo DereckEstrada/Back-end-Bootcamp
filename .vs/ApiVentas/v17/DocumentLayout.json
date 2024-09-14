@@ -1,14 +1,54 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\",
+  "WorkspaceRootPath": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\respaldo\\bootcamp\\apiventas\\models\\categorium.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\models\\categorium.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\movimientoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\movimientoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\respaldo\\bootcamp\\apiventas\\models\\bodega.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\sucursalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\sucursalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\catalogocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\catalogocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\paiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\paiscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\models\\bodega.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\models\\bodega.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\bodegacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\bodegacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\models\\baseerpcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\models\\baseerpcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\interfaces\\iusuarioservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\interfaces\\iusuarioservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\puntoemisionsricontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\puntoemisionsricontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\proveedorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\proveedorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\empresacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\empresacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,27 +67,158 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Categorium.cs",
-              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Categorium.cs",
-              "RelativeDocumentMoniker": "ApiVentas\\Models\\Categorium.cs",
-              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Categorium.cs",
-              "RelativeToolTip": "ApiVentas\\Models\\Categorium.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAfAAAA",
+              "Title": "MovimientosController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\MovimientosController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\MovimientosController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\MovimientosController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\MovimientosController.cs",
+              "ViewState": "AQIAAHoAAAAAAAAAAAAAAHwAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-20T14:25:43.806Z",
+              "WhenOpened": "2024-09-14T01:40:53.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CatalogoController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\CatalogoController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\CatalogoController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\CatalogoController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\CatalogoController.cs",
+              "ViewState": "AQIAADQAAAAAAAAAAAAAADQAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-14T01:40:42.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PaisController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\PaisController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\PaisController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\PaisController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\PaisController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-14T01:40:35.511Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Bodega.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Models\\Bodega.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
+              "RelativeToolTip": "ApiVentas\\Models\\Bodega.cs",
+              "ViewState": "AQIAABcAAAAAAAAAAAAAACAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-14T01:07:15.153Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BaseErpContext.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Models\\BaseErpContext.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Models\\BaseErpContext.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Models\\BaseErpContext.cs",
+              "RelativeToolTip": "ApiVentas\\Models\\BaseErpContext.cs",
+              "ViewState": "AQIAAP4AAAAAAAAAAAAkwB4BAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-14T01:06:55.129Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "IUsuarioServices.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Interfaces\\IUsuarioServices.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Interfaces\\IUsuarioServices.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Interfaces\\IUsuarioServices.cs",
+              "RelativeToolTip": "ApiVentas\\Interfaces\\IUsuarioServices.cs",
+              "ViewState": "AQIAAAIAAAAAAAAAAIBJwAUAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-13T04:51:40.788Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UsuarioController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\UsuarioController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\UsuarioController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\UsuarioController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\UsuarioController.cs",
+              "ViewState": "AQIAAAIAAAAAAAAAAADwvxMAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-13T03:58:14.832Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Bodega.cs",
-              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
-              "RelativeDocumentMoniker": "ApiVentas\\Models\\Bodega.cs",
-              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\Respaldo\\BootCamp\\ApiVentas\\Models\\Bodega.cs",
-              "RelativeToolTip": "ApiVentas\\Models\\Bodega.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAbAAAA",
+              "Title": "SucursalController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\SucursalController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\SucursalController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\SucursalController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\SucursalController.cs",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAAABcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-20T14:24:52.356Z"
+              "WhenOpened": "2024-09-13T03:33:22.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BodegaController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\BodegaController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\BodegaController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\BodegaController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\BodegaController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-13T04:15:58.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ProveedorController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\ProveedorController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\ProveedorController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\ProveedorController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\ProveedorController.cs",
+              "ViewState": "AQIAAB8AAAAAAAAAAIBJwCIAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-13T03:36:20.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "PuntoEmisionSriController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\PuntoEmisionSriController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\PuntoEmisionSriController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\PuntoEmisionSriController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\PuntoEmisionSriController.cs",
+              "ViewState": "AQIAABEAAAAAAAAAAIBJwBQAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-13T03:48:15.808Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "EmpresaController.cs",
+              "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\EmpresaController.cs",
+              "RelativeDocumentMoniker": "ApiVentas\\Controllers\\EmpresaController.cs",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\EmpresaController.cs",
+              "RelativeToolTip": "ApiVentas\\Controllers\\EmpresaController.cs",
+              "ViewState": "AQIAAAcAAAAAAAAAAIBJwAoAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-13T03:41:30.147Z",
+              "EditorCaption": ""
             }
           ]
         }

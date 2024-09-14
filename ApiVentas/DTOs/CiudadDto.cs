@@ -1,17 +1,15 @@
 ﻿namespace ApiVentas.DTOs
 {
-    public class CiudadDto
+    public class CiudadDTO
     {
-        public int CiudadID { get; set; }
-
-        public string? CiuNombre { get; set; }
-
-        public string? EstadoDesc { get; set; }
-
+        public int CiudadId { get; set; }
+        public string? CiudadNombre { get; set; }
+        public int? PaisId { get; set; }
+        public string? PaisDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
         public DateTime? FechaHoraReg { get; set; }
-
-        public DateTime? FechaHoraAct { get; set; }
-
-        public string? PaisDescrip { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

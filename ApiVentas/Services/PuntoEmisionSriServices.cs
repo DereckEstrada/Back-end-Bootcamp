@@ -2,149 +2,142 @@
 using ApiVentas.Interfaces;
 using ApiVentas.Models;
 using ApiVentas.Utilitarios;
+using ApiVentas.Utilitarios.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace ApiVentas.Services
 {
-    public class PuntoEmisionSriServices: IPuntoEmisionSriServices
+    public class PuntoEmisionSriServices : IPuntoEmisionSriServices, IServices<PuntoEmisionSri>
     {
         private BaseErpContext _context;
-        private PuntoEmisionSriDTO dto = new PuntoEmisionSriDTO();
         private ControlError log = new ControlError();
-        private DynamicEmpty empty = new DynamicEmpty();
+        private DynamicEmpty dynamicEmpty = new DynamicEmpty();
         public PuntoEmisionSriServices(BaseErpContext context)
         {
             this._context = context;
         }
-        public async Task<Respuesta> DeletePuntoEmisionSri(int id)
+
+        public async Task<Respuesta> GetPuntoEmisionSri(DataQuery dataQuery)
         {
             var result = new Respuesta();
             try
             {
-                var emisionSriDelete = await _context.PuntoEmisionSris.FirstOrDefaultAsync(x => x.PuntoEmisionId== id);
-                if (emisionSriDelete != null)
-                {
-                    emisionSriDelete.EstadoId = 2;
-                    _context.PuntoEmisionSris.Update(emisionSriDelete);
-                    await _context.SaveChangesAsync();
-                }
-                result.Cod = emisionSriDelete!= null ? "000" : "111";
-                result.Mensaje = emisionSriDelete!= null ? "OK" : $"No se encontro registro con id: '{id}'";
-
+                result.Data = await _context.PuntoEmisionSris
+                                            .Include(puntoEmisionSri => puntoEmisionSri.Empresa)
+                                            .Include(puntoEmisionSri => puntoEmisionSri.Sucursal)
+                                            .Include(puntoEmisionSri => puntoEmisionSri.Estado)
+                                            .Include(puntoEmisionSri => puntoEmisionSri.UsuIdRegNavigation)
+                                            .Include(puntoEmisionSri => puntoEmisionSri.Empresa)
+                                            .Where(PuntoEmisionSriDictionary.GetExpression(dataQuery))
+                                            .Select(puntoEmisionSri => new PuntoEmisionSriDTO
+                                            {
+                                                PuntoEmisionId=puntoEmisionSri.PuntoEmisionId,
+                                                PuntoEmision=puntoEmisionSri.PuntoEmision,
+                                                EmpresaId=puntoEmisionSri.EmpresaId,
+                                                EmpresaDescripcion=puntoEmisionSri.Empresa.EmpresaNombre,
+                                                SucursalId=puntoEmisionSri.SucursalId,
+                                                SucursalDescripcion=puntoEmisionSri.Sucursal.SucursalRuc,
+                                                CodEstablecimientoSri=puntoEmisionSri.CodEstablecimientoSri,
+                                                UltSecuencia=puntoEmisionSri.UltSecuencia,
+                                                EstadoId=puntoEmisionSri.EstadoId,
+                                                EstadoDescripcion=puntoEmisionSri.Estado.EstadoDescrip,
+                                                FechaHoraReg=puntoEmisionSri.FechaHoraReg,
+                                                UsuIdReg=puntoEmisionSri.UsuIdReg,
+                                                UsuRegName=puntoEmisionSri.UsuIdRegNavigation.UsuNombre,
+                                            }).ToListAsync();
+                
+                result.Code = dynamicEmpty.IsEmpty(result.Data) ? "204" : "200";
+                result.Message = dynamicEmpty.IsEmpty(result.Data) ? $"No se encontro registro con opcion:'{dataQuery.OpcionData}' con data: '{dataQuery.DataFirstQuery}'" : "Ok";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
-                log.LogErrorMetodos(this.GetType().Name, "DeletePuntoEmisionSri", ex.Message);
-
-            }
-            return result;
-        }
-
-        public async Task<Respuesta> GetPuntoEmisionSri(string? opcion, string? Data)
-        {
-            var result = new Respuesta();
-            Expression<Func<PuntoEmisionSriDTO, bool>> query = dto.DictionaryPuntoSri(opcion, Data);
-            try
-            {
-                if (query != null)
-                {
-                    result.Data = await (from emision in _context.PuntoEmisionSris
-                                         join e in _context.Empresas on emision.EmpresaId equals e.EmpresaId   
-                                         join s in _context.Sucursals on emision.SucursalId equals s.SucursalId
-                                         join userReg in _context.Usuarios on emision.UsuIdReg equals userReg.UsuId
-                                         join est in _context.Estados on emision.EstadoId equals est.EstadoId
-                                         //join userAct in _context.Usuarios on emision.UsuIdAct equals userAct.UsuId
-                                         select new PuntoEmisionSriDTO
-                                         {
-                                             PuntoEmisionId= emision.PuntoEmisionId,
-                                             PuntoEmision=emision.PuntoEmision,
-                                             EmpresaId=emision.EmpresaId,
-                                             EmpresaDescrip=e.EmpresaNombre,
-                                             SucursalId=emision.SucursalId,
-                                             SucursalDescrip=s.SucursalNombre,
-                                             CodEstablecimientoSri=emision.CodEstablecimientoSri,
-                                             UltSecuencia=emision.UltSecuencia,
-                                             EstadoId=emision.EstadoId,
-                                             EstadoDescrip=est.EstadoDescrip,
-                                             FechaHoraReg=emision.FechaHoraReg, 
-                                             FechaHoraAct=emision.FechaHoraAct,
-                                             UsuIdReg=emision.UsuIdReg,
-                                             UsuRegDescrip=userReg.UsuNombre,
-                                             UsuIdAct=emision.UsuIdAct,
-                                             //UsuActDescrip=userAct.UsuNombre
-                                         }).Where(query).ToListAsync();
-                }
-                result.Cod = empty.IsEmpty(result.Data) ? "111" : "000";
-                result.Mensaje = empty.IsEmpty(result.Data) ? $"No se encontro registro con opcion: '{opcion}' con Data: '{Data}'" : "OK";
-            }
-            catch (Exception ex)
-            {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "GetPuntoEmisionSri", ex.Message);
 
             }
             return result;
         }
 
-        public async Task<Respuesta> PostPuntoEmisionSri(PuntoEmisionSri emisionSri)
+        public async Task<Respuesta> PostPuntoEmisionSri(PuntoEmisionSri puntoEmisionSri)
         {
             var result = new Respuesta();
             try
             {
-                var id = await _context.PuntoEmisionSris.OrderByDescending(x => x.PuntoEmisionId).Select(x => x.PuntoEmisionId).FirstOrDefaultAsync() + 1;
-                emisionSri.PuntoEmisionId= id;
-                emisionSri.FechaHoraReg = DateTime.Now;
-                var validar = emisionSri.UsuIdReg != null;
-                if (validar)
-                {
-                    _context.PuntoEmisionSris.Add(emisionSri);
+                var query = await _context.PuntoEmisionSris.OrderByDescending(puntoEmisionSriDB => puntoEmisionSriDB.PuntoEmisionId)
+                                                                .Select(idDB => idDB.PuntoEmisionId).FirstOrDefaultAsync() + 1;
+                puntoEmisionSri.PuntoEmisionId = query;
+                puntoEmisionSri.FechaHoraReg = DateTime.Now;
+
+                    _context.PuntoEmisionSris.Add(puntoEmisionSri);
                     await _context.SaveChangesAsync();
-                }
-                result.Cod = validar ? "000" : "111";
-                result.Mensaje = validar ? "Ok" : "No se puede ingresar registro sin datos del usuario";
+                
+                result.Code =  "200" ;
+                result.Message = "Ok";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "PostPuntoEmisionSri", ex.Message);
-
             }
             return result;
         }
 
-        public async Task<Respuesta> PutPuntoEmisionSri(PuntoEmisionSri emisionSri)
+        public async Task<Respuesta> PutPuntoEmisionSri(PuntoEmisionSri puntoEmisionSri)
         {
             var result = new Respuesta();
             try
             {
-                var validar = await _context.PuntoEmisionSris.AnyAsync(x => x.PuntoEmisionId== emisionSri.PuntoEmisionId);
-                var usuarioEdit = emisionSri.UsuIdAct;
-                if (validar && usuarioEdit != null)
-                {
-                    result.Cod = "000";
-                    result.Mensaje = "OK";
-                    emisionSri.UsuIdReg = await _context.PuntoEmisionSris.Where(x => x.PuntoEmisionId== emisionSri.PuntoEmisionId).Select(x => x.UsuIdReg).FirstOrDefaultAsync();
-                    emisionSri.FechaHoraReg = await _context.PuntoEmisionSris.Where(x => x.PuntoEmisionId == emisionSri.PuntoEmisionId).Select(x => x.FechaHoraReg).FirstOrDefaultAsync();
-                    emisionSri.FechaHoraAct = DateTime.Now;
-                    _context.PuntoEmisionSris.Update(emisionSri);
+                var existPuntoEmisionSri = await _context.PuntoEmisionSris.AnyAsync(puntoEmisionSriDB =>
+                                                                    puntoEmisionSriDB.PuntoEmisionId 
+                                                                    == puntoEmisionSri.PuntoEmisionId);
+                if (existPuntoEmisionSri)
+                {                    
+                    puntoEmisionSri.FechaHoraAct = DateTime.Now;
+                    
+                    _context.PuntoEmisionSris.Update(puntoEmisionSri);
                     await _context.SaveChangesAsync();
+                    result.Data = puntoEmisionSri;
                 }
-                else
-                {
-                    result.Cod = "111";
-                    result.Mensaje = usuarioEdit != null ? $"No se encontro registro con id: '{emisionSri.PuntoEmisionId}'" : "No se puede actualizar registro sin los datos del usuario";
-                }
+                result.Code = existPuntoEmisionSri ? "200" : "204";
+                result.Message = existPuntoEmisionSri ? "Ok" : $"No se encontro registro con id: '{puntoEmisionSri.PuntoEmisionId}'";
             }
             catch (Exception ex)
             {
-                result.Cod = "999";
-                result.Mensaje = "Se ha presentado un exception por favor comunicarse con sistemas";
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
                 log.LogErrorMetodos(this.GetType().Name, "PutPuntoEmisionSri", ex.Message);
+            }
+            return result;
+        }
+        public async Task<Respuesta> DeletePuntoEmisionSri(PuntoEmisionSri puntoEmisionSri)
+        {
+            var result = new Respuesta();
+            try
+            {
+                var existPuntoEmisionSri = await _context.PuntoEmisionSris.AnyAsync(puntoEmisionSriDB =>
+                                                                    puntoEmisionSriDB.PuntoEmisionId
+                                                                    == puntoEmisionSri.PuntoEmisionId);
+                if (existPuntoEmisionSri)
+                {
+                    puntoEmisionSri.FechaHoraAct=DateTime.Now;
+                    puntoEmisionSri.EstadoId = 2;
+                    
+                    _context.PuntoEmisionSris.Update(puntoEmisionSri);
+                    await _context.SaveChangesAsync();
+                }
+                result.Code = existPuntoEmisionSri ? "200" : "204";
+                result.Message = existPuntoEmisionSri ? "Ok" : $"No se encontro registro con id: '{puntoEmisionSri.PuntoEmisionId}'";
+
+            }
+            catch (Exception ex)
+            {
+                result.Code = "400";
+                result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
+                log.LogErrorMetodos(this.GetType().Name, "DeletePuntoEmisionSri", ex.Message);
+
             }
             return result;
         }

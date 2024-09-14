@@ -3,13 +3,16 @@
     public class UsuarioPermisoDTO
     {
         public int PermisoId { get; set; }
-        public string? Modulodescripcion { get; set; }
+        public int? ModuloId { get; set; }
+        public string? ModuloDescripcion { get; set; }
+        public int? OpcionId { get; set; }
         public string? OpcionDescripcion { get; set; }
-        public string? UsuarioNombre { get; set; }
-        public string? Estado {  get; set; }
-        public DateTime? FechaRegistro { get; set; }
-        public DateTime? FechaActualizacion { get; set; }
-        public int? UsuIdReg {  get; set; }
-        public int? UsuIdAct {  get; set; }
+        public int? UsuId { get; set; }
+        public string? UsuDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

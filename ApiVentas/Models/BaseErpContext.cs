@@ -33,6 +33,8 @@ public partial class BaseErpContext : DbContext
 
     public virtual DbSet<Modulo> Modulos { get; set; }
 
+    public virtual DbSet<ModuloOpcionesBusquedum> ModuloOpcionesBusqueda { get; set; }
+
     public virtual DbSet<MovimientoCab> MovimientoCabs { get; set; }
 
     public virtual DbSet<MovimientoDetPago> MovimientoDetPagos { get; set; }
@@ -40,6 +42,8 @@ public partial class BaseErpContext : DbContext
     public virtual DbSet<MovimientoDetProducto> MovimientoDetProductos { get; set; }
 
     public virtual DbSet<Opcion> Opcions { get; set; }
+
+    public virtual DbSet<OpcionesBusquedum> OpcionesBusqueda { get; set; }
 
     public virtual DbSet<Pai> Pais { get; set; }
 
@@ -63,11 +67,20 @@ public partial class BaseErpContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    public virtual DbSet<UsuarioAutenticacion> UsuarioAutenticacions { get; set; }
+
     public virtual DbSet<UsuarioPermiso> UsuarioPermisos { get; set; }
 
     public virtual DbSet<UsuarioRol> UsuarioRols { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DERECK\\SQLEXPRESS;Database=BASE_ERP;Integrated Security=true;TrustServerCertificate=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Modern_Spanish_CI_AS");
+
         modelBuilder.Entity<Bodega>(entity =>
         {
             entity.HasKey(e => e.BodegaId).HasName("_copy_3");
@@ -462,6 +475,38 @@ public partial class BaseErpContext : DbContext
                 .HasConstraintName("fk_modulo_user_reg");
         });
 
+        modelBuilder.Entity<ModuloOpcionesBusquedum>(entity =>
+        {
+            entity.HasKey(e => e.ModuloOpcionesBusquedaId).HasName("pk_modulo_opciones_busqueda");
+
+            entity.Property(e => e.ModuloOpcionesBusquedaId)
+                .ValueGeneratedNever()
+                .HasColumnName("moduloOpcionesBusqueda_id");
+            entity.Property(e => e.EstadoId).HasColumnName("estado_id");
+            entity.Property(e => e.FechaHoraAct)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_hora_act");
+            entity.Property(e => e.FechaHoraReg)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_hora_reg");
+            entity.Property(e => e.ModuloId).HasColumnName("modulo_id");
+            entity.Property(e => e.OpcionesBusquedaId).HasColumnName("opcionesBusqueda_id");
+            entity.Property(e => e.UsuIdAct).HasColumnName("usu_id_act");
+            entity.Property(e => e.UsuIdReg).HasColumnName("usu_id_reg");
+
+            entity.HasOne(d => d.Estado).WithMany(p => p.ModuloOpcionesBusqueda)
+                .HasForeignKey(d => d.EstadoId)
+                .HasConstraintName("fk_modulo_opciones_busqueda_estado");
+
+            entity.HasOne(d => d.UsuIdActNavigation).WithMany(p => p.ModuloOpcionesBusquedumUsuIdActNavigations)
+                .HasForeignKey(d => d.UsuIdAct)
+                .HasConstraintName("fk_modulo_opciones_busqueda_usuario_act");
+
+            entity.HasOne(d => d.UsuIdRegNavigation).WithMany(p => p.ModuloOpcionesBusquedumUsuIdRegNavigations)
+                .HasForeignKey(d => d.UsuIdReg)
+                .HasConstraintName("fk_modulo_opciones_busqueda_usuario_reg");
+        });
+
         modelBuilder.Entity<MovimientoCab>(entity =>
         {
             entity.HasKey(e => e.MovicabId).HasName("PK__MOVIMIEN__57E1745CDAB11D8D");
@@ -713,6 +758,40 @@ public partial class BaseErpContext : DbContext
                 .HasConstraintName("fk_opcion_user_reg");
         });
 
+        modelBuilder.Entity<OpcionesBusquedum>(entity =>
+        {
+            entity.HasKey(e => e.OpcionesBusquedaId).HasName("pk_opciones_busqueda");
+
+            entity.Property(e => e.OpcionesBusquedaId)
+                .ValueGeneratedNever()
+                .HasColumnName("opcionesBusqueda_id");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.EstadoId).HasColumnName("estado_id");
+            entity.Property(e => e.FechaHoraAct)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_hora_act");
+            entity.Property(e => e.FechaHoraReg)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_hora_reg");
+            entity.Property(e => e.UsuIdAct).HasColumnName("usu_id_act");
+            entity.Property(e => e.UsuIdReg).HasColumnName("usu_id_reg");
+
+            entity.HasOne(d => d.Estado).WithMany(p => p.OpcionesBusqueda)
+                .HasForeignKey(d => d.EstadoId)
+                .HasConstraintName("fk_opciones_busqueda_estado");
+
+            entity.HasOne(d => d.UsuIdActNavigation).WithMany(p => p.OpcionesBusquedumUsuIdActNavigations)
+                .HasForeignKey(d => d.UsuIdAct)
+                .HasConstraintName("fk_opciones_busqueda_usuario_act");
+
+            entity.HasOne(d => d.UsuIdRegNavigation).WithMany(p => p.OpcionesBusquedumUsuIdRegNavigations)
+                .HasForeignKey(d => d.UsuIdReg)
+                .HasConstraintName("fk_opciones_busqueda_usuario_reg");
+        });
+
         modelBuilder.Entity<Pai>(entity =>
         {
             entity.HasKey(e => e.PaisId).HasName("PK__PAIS__C050735EE689B39E");
@@ -943,10 +1022,9 @@ public partial class BaseErpContext : DbContext
                 .HasForeignKey(d => d.EstadoId)
                 .HasConstraintName("fk_puntovta_estado");
 
-            entity.HasOne(d => d.Puntovta).WithOne(p => p.PuntoVentum)
-                .HasForeignKey<PuntoVentum>(d => d.PuntovtaId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PUNTO_VENTA_PUNTO_EMISION_SRI");
+            entity.HasOne(d => d.PuntoEmision).WithMany(p => p.PuntoVenta)
+                .HasForeignKey(d => d.PuntoEmisionId)
+                .HasConstraintName("fk_punto_venta_emision");
 
             entity.HasOne(d => d.Sucursal).WithMany(p => p.PuntoVenta)
                 .HasForeignKey(d => d.SucursalId)
@@ -1228,6 +1306,27 @@ public partial class BaseErpContext : DbContext
             entity.HasOne(d => d.UsuIdRegNavigation).WithMany(p => p.InverseUsuIdRegNavigation)
                 .HasForeignKey(d => d.UsuIdReg)
                 .HasConstraintName("fk_usuario_user_reg");
+        });
+
+        modelBuilder.Entity<UsuarioAutenticacion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("usuario_autenticacion");
+
+            entity.Property(e => e.Username)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("username");
+            entity.Property(e => e.Userpassword)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("userpassword");
+            entity.Property(e => e.UsuId).HasColumnName("usu_id");
+
+            entity.HasOne(d => d.Usu).WithMany()
+                .HasForeignKey(d => d.UsuId)
+                .HasConstraintName("FK_AUTENTICACION_USUARIO");
         });
 
         modelBuilder.Entity<UsuarioPermiso>(entity =>

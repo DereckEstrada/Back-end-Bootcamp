@@ -61,6 +61,10 @@ public partial class Usuario
 
     public virtual ICollection<Usuario> InverseUsuIdRegNavigation { get; set; } = new List<Usuario>();
 
+    public virtual ICollection<ModuloOpcionesBusquedum> ModuloOpcionesBusquedumUsuIdActNavigations { get; set; } = new List<ModuloOpcionesBusquedum>();
+
+    public virtual ICollection<ModuloOpcionesBusquedum> ModuloOpcionesBusquedumUsuIdRegNavigations { get; set; } = new List<ModuloOpcionesBusquedum>();
+
     public virtual ICollection<Modulo> ModuloUsuIdActNavigations { get; set; } = new List<Modulo>();
 
     public virtual ICollection<Modulo> ModuloUsuIdRegNavigations { get; set; } = new List<Modulo>();
@@ -80,6 +84,10 @@ public partial class Usuario
     public virtual ICollection<Opcion> OpcionUsuIdActNavigations { get; set; } = new List<Opcion>();
 
     public virtual ICollection<Opcion> OpcionUsuIdRegNavigations { get; set; } = new List<Opcion>();
+
+    public virtual ICollection<OpcionesBusquedum> OpcionesBusquedumUsuIdActNavigations { get; set; } = new List<OpcionesBusquedum>();
+
+    public virtual ICollection<OpcionesBusquedum> OpcionesBusquedumUsuIdRegNavigations { get; set; } = new List<OpcionesBusquedum>();
 
     public virtual ICollection<Pai> PaiUsuIdActNavigations { get; set; } = new List<Pai>();
 

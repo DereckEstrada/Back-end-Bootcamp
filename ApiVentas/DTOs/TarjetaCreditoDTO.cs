@@ -2,13 +2,14 @@
 {
     public class TarjetaCreditoDTO
     {
-        public int TarjetaCreditoID { get; set; }
-        public string? TarjetaDescripcion { get; set; }
+        public int TarjetacredId { get; set; }
+        public string? TarjetacredDescripcion { get; set; }
+        public int? IndustriaId { get; set; }
         public string? IndustriaDescripcion { get; set; }
+        public int? EstadoId { get; set; }
         public string? EstadoDescripcion { get; set; }
-        public DateTime? FechaReg { get; set; }
-        public DateTime? FechaAct { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
         public int? UsuIdReg { get; set; }
-        public int? UsuIdAct { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }

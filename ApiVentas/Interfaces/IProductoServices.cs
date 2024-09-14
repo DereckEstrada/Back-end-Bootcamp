@@ -5,9 +5,9 @@ namespace ApiVentas.Interfaces
 {
     public interface IProductoServices
     {
-        Task<Respuesta> GetProducto(string? opcion, string? data, string? data2);
+        Task<Respuesta> GetProducto(DataQuery dataQuery);
         Task<Respuesta> PostProducto(Producto producto);
         Task<Respuesta> PutProducto(Producto producto);
-        Task<Respuesta> DeleteProducto(int id);
+        Task<Respuesta> DeleteProducto(Producto producto);
     }
 }
