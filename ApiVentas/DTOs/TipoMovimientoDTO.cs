@@ -3,7 +3,7 @@
     public class TipoMovimientoDTO
     {
         public int TipomovId { get; set; }
-        public string? TipomovDescripcion { get; set; }
+        public string? TipomovDescrip { get; set; }
         public short? TipomovIngEgr { get; set; }
         public int? EstadoId { get; set; }
         public string? EstadoDescripcion { get; set; }

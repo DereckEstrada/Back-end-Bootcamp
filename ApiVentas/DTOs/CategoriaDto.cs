@@ -3,7 +3,7 @@
     public class CategoriaDTO
     {
         public int CategoriaId { get; set; }
-        public string? CategoriaDescripcion { get; set; }
+        public string? CategoriaDescrip { get; set; }
         public int? EstadoId { get; set; }
         public string? EstadoDescripcion { get; set; }
         public DateTime? FechaHoraReg { get; set; }

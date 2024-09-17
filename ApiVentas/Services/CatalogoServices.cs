@@ -30,7 +30,7 @@ namespace ApiVentas.Services
                                             .Select(categoria => new CategoriaDTO
                                             {
                                                 CategoriaId = categoria.CategoriaId,
-                                                CategoriaDescripcion = categoria.CategoriaDescrip,
+                                                CategoriaDescrip= categoria.CategoriaDescrip,
                                                 EstadoId = categoria.EstadoId,
                                                 EstadoDescripcion = categoria.Estado.EstadoDescrip,
                                                 FechaHoraReg = categoria.FechaHoraReg,
@@ -477,7 +477,7 @@ namespace ApiVentas.Services
                                             .Select(tipoMovimiento => new TipoMovimientoDTO
                                             {
                                                 TipomovId = tipoMovimiento.TipomovId,
-                                                TipomovDescripcion = tipoMovimiento.TipomovDescrip,
+                                                TipomovDescrip= tipoMovimiento.TipomovDescrip,
                                                 TipomovIngEgr = tipoMovimiento.TipomovIngEgr,
                                                 EstadoId = tipoMovimiento.EstadoId,
                                                 EstadoDescripcion = tipoMovimiento.Estado.EstadoDescrip,

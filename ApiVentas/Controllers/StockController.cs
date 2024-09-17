@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace ApiVentas.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
+    [ApiController]     
     public class StockController : ControllerBase
     {
         private readonly IStockServices _stockServices;
