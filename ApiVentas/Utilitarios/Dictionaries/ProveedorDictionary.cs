@@ -10,7 +10,7 @@ namespace ApiVentas.Utilitarios.Dictionaries
         {
             {"all", dataQuery=>proveedor=> proveedor.EstadoId==1 },
             {"id", dataQuery=>proveedor=>  proveedor.ProvId==dataQuery.TryIntDataFirst() && proveedor.EstadoId==1 },
-            {"ruc", dataQuery=>proveedor=> proveedor.ProvRuc.Equals(dataQuery.DataFirstQuery)  && proveedor.EstadoId==1 },
+            {"ruc", dataQuery=>proveedor=> proveedor.ProvRuc.Contains(dataQuery.DataFirstQuery)  && proveedor.EstadoId==1 },
             {"nombre", dataQuery=>proveedor=> proveedor.ProvNomComercial.Contains(dataQuery.DataFirstQuery)
                                                                                         && proveedor.EstadoId==1 },
             {"razon", dataQuery=>proveedor=> proveedor.ProvRazon.Equals(dataQuery.DataFirstQuery) && proveedor.EstadoId==1 },

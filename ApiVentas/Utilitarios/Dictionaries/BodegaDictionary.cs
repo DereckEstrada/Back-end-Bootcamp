@@ -12,7 +12,7 @@ namespace ApiVentas.Utilitarios.Dictionaries
         {
             {"all", dataQuery=>bodega => bodega.EstadoId == 1},
             {"id", dataQuery=>bodega => bodega.BodegaId == dataQuery.TryIntDataFirst() && bodega.EstadoId == 1},
-            {"nombre", dataQuery=>bodega => bodega.BodegaNombre.Contains(dataQuery.DataFirstQuery )},
+            {"nombre", dataQuery=>bodega => bodega.BodegaNombre.Contains(dataQuery.DataFirstQuery ) && bodega.EstadoId == 1},
             {"direccion", dataQuery=>bodega => bodega.BodegaDireccion.Contains(dataQuery.DataFirstQuery) && bodega.EstadoId == 1},
             {"telefono", dataQuery=>bodega => bodega.BodegaTelefono.Equals(dataQuery.DataFirstQuery) && bodega.EstadoId == 1},
             {"sucursal", dataQuery=>bodega => bodega.SucursalId == dataQuery.TryIntDataFirst() && bodega.EstadoId == 1},

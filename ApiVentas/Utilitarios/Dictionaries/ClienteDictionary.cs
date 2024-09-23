@@ -10,6 +10,7 @@ namespace ApiVentas.Utilitarios.Dictionaries
         {
             {"all", dataQuery=>cliente=>cliente.EstadoId==1},
             {"id", dataQuery=>cliente=>cliente.ClienteId==dataQuery.TryIntDataFirst() && cliente.EstadoId==1},
+            {"ruc", dataQuery=>cliente=>cliente.ClienteRuc.Contains(dataQuery.DataFirstQuery) && cliente.EstadoId==1},
             {"primer_nombre", dataQuery=>cliente=>cliente.ClienteNombre1.Contains(dataQuery.DataFirstQuery) 
                                                                                             && cliente.EstadoId==1},
             {"segundo_nombre", dataQuery=>cliente=>cliente.ClienteNombre2.Contains(dataQuery.DataFirstQuery)

@@ -20,7 +20,7 @@ namespace ApiVentas.Utilitarios.Dictionaries
             {"rango_precio", dataQuery=>producto=> dataQuery.tryDecimalDataFirst()<=producto.ProdUltPrecio && producto.ProdUltPrecio<=dataQuery.tryDecimalDataSecond()&& producto.EstadoId==1 },            
         };
         public static Expression<Func<Producto, bool>> GetExpression(DataQuery dataQuery)
-        {
+            {
             Expression<Func<Producto, bool>> query = producto => false;
             if (ProductoDictionary.OptionsQuery.TryGetValue(dataQuery.OpcionData, out var expressionQuery))
             {

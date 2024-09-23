@@ -4,6 +4,8 @@ using ApiVentas.Models;
 using ApiVentas.Utilitarios;
 using ApiVentas.Utilitarios.Dictionaries;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
 
@@ -73,7 +75,8 @@ namespace ApiVentas.Services
                                                     .Select(idDB => idDB.StockId).FirstOrDefaultAsync() + 1;
                 stock.StockId = query;
                 stock.FechaHoraReg = DateTime.Now;
-
+                stock.EstadoId = 1;
+                await UpdateStocks(stock);                
                 _context.Stocks.Add(stock);
                 await _context.SaveChangesAsync();
 
@@ -138,6 +141,18 @@ namespace ApiVentas.Services
                 log.LogErrorMetodos(this.GetType().Name, "DeleteStock", ex.Message);
             }
             return result;
+        }
+        private async Task UpdateStocks(Stock stock)
+        {
+            var oldStocks = await _context.Stocks.Where(oldStock => oldStock.ProdId == stock.ProdId && oldStock.SucursalId == stock.SucursalId
+                            && oldStock.BodegaId == stock.BodegaId && oldStock.EmpresaId == stock.EmpresaId && oldStock.EstadoId == 1).ToListAsync();
+            foreach (var item in oldStocks)
+            {
+                item.EstadoId = 2;
+                item.FechaHoraAct = DateTime.Now;
+                _context.Update(item);
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

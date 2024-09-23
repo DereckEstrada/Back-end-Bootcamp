@@ -9,6 +9,7 @@ namespace ApiVentas.Utilitarios.Dictionaries
         {
             {"all", dataQuery=>sucursal=>sucursal.EstadoId==1},
             {"id", dataQuery=>sucursal=>sucursal.SucursalId==dataQuery.TryIntDataFirst() && sucursal.EstadoId==1},
+            {"nombre", dataQuery=>sucursal=>sucursal.SucursalNombre.Contains(dataQuery.DataFirstQuery) && sucursal.EstadoId==1},
             {"ruc", dataQuery=>sucursal=>sucursal.SucursalRuc.Equals(dataQuery.DataFirstQuery) && sucursal.EstadoId==1},
             {"direccion", dataQuery=>sucursal=>sucursal.SucursalDireccion.Equals(dataQuery.DataFirstQuery) && sucursal.EstadoId==1},
             {"telefono", dataQuery=>sucursal=>sucursal.SucursalTelefono.Equals(dataQuery.DataFirstQuery) && sucursal.EstadoId==1},

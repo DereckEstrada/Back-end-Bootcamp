@@ -23,6 +23,8 @@ public partial class BaseErpContext : DbContext
 
     public virtual DbSet<Cliente> Clientes { get; set; }
 
+    public virtual DbSet<Dashboard> Dashboards { get; set; }
+
     public virtual DbSet<Empresa> Empresas { get; set; }
 
     public virtual DbSet<Estado> Estados { get; set; }
@@ -72,6 +74,8 @@ public partial class BaseErpContext : DbContext
     public virtual DbSet<UsuarioPermiso> UsuarioPermisos { get; set; }
 
     public virtual DbSet<UsuarioRol> UsuarioRols { get; set; }
+
+    public virtual DbSet<VentasMe> VentasMes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -271,6 +275,19 @@ public partial class BaseErpContext : DbContext
             entity.HasOne(d => d.UsuIdRegNavigation).WithMany(p => p.ClienteUsuIdRegNavigations)
                 .HasForeignKey(d => d.UsuIdReg)
                 .HasConstraintName("fk_cliente_user_reg");
+        });
+
+        modelBuilder.Entity<Dashboard>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Dashboard");
+
+            entity.Property(e => e.DiferenciaStock).HasColumnName("diferencia_stock");
+            entity.Property(e => e.TotalDia)
+                .HasColumnType("decimal(38, 2)")
+                .HasColumnName("total_dia");
+            entity.Property(e => e.TotalMovimientos).HasColumnName("total_movimientos");
         });
 
         modelBuilder.Entity<Empresa>(entity =>
@@ -1420,6 +1437,16 @@ public partial class BaseErpContext : DbContext
             entity.HasOne(d => d.UsuIdRegNavigation).WithMany(p => p.UsuarioRolUsuIdRegNavigations)
                 .HasForeignKey(d => d.UsuIdReg)
                 .HasConstraintName("fk_usu_rol_user_reg");
+        });
+
+        modelBuilder.Entity<VentasMe>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("ventasMes");
+
+            entity.Property(e => e.Mes).HasColumnName("mes");
+            entity.Property(e => e.Ventas).HasColumnName("ventas");
         });
 
         OnModelCreatingPartial(modelBuilder);

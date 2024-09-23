@@ -187,7 +187,6 @@ C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug
 C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug\net8.0\System.Runtime.Caching.dll
 C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug\net8.0\System.Security.Permissions.dll
-C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug\net8.0\System.Text.Json.dll
 C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug\net8.0\System.Windows.Extensions.dll
 C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\derec\OneDrive\Documents\Bootcamp\.NetCore\BootCamp\ApiVentas\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll

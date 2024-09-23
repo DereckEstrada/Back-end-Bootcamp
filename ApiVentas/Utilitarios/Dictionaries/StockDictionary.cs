@@ -9,10 +9,11 @@ namespace ApiVentas.Utilitarios.Dictionaries
         {
             {"all", dataQuery=> stock=>stock.EstadoId==1},
             {"id", dataQuery=> stock=> stock.StockId==dataQuery.TryIntDataFirst() && stock.EstadoId==1},
+            {"descripcion", dataQuery=> stock=> stock.Prod.ProdDescripcion.Contains(dataQuery.DataFirstQuery) && stock.EstadoId==1},
             {"empresa", dataQuery=> stock=> stock.EmpresaId==dataQuery.TryIntDataFirst() && stock.EstadoId==1},
             {"sucursal", dataQuery=> stock=> stock.SucursalId==dataQuery.TryIntDataFirst() && stock.EstadoId==1},
             {"producto", dataQuery=> stock=> stock.ProdId==dataQuery.TryIntDataFirst() && stock.EstadoId==1},
-            {"cantidad", dataQuery=> stock=> stock.CantidadStock==dataQuery.TryIntDataFirst() && stock.EstadoId==1},
+            {"cantidad", dataQuery=> stock=> stock.CantidadStock==dataQuery.TryIntDataFirst() && stock.EstadoId==1},            
             {"fecha", dataQuery=> stock=> stock.FechaHoraReg==dataQuery.TryDateTimeDataFirst() && stock.EstadoId==1},
             {"estado", dataQuery=> stock=> stock.EstadoId==dataQuery.TryIntDataFirst()},
             {"rango_cantidad", dataQuery=> stock=> dataQuery.TryIntDataFirst()<=stock.CantidadStock 

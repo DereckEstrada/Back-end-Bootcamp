@@ -20,7 +20,7 @@ namespace ApiVentas.Controllers
         [HttpPost]
         [Route("RestCliente")]
         public async Task<Respuesta> RestCliente([FromBody] Request request)
-        {
+            {
             var result = new Respuesta();
             try
             {

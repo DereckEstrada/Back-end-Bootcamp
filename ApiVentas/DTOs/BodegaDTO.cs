@@ -1,21 +1,17 @@
 ﻿namespace ApiVentas.DTOs
 {
-    public class BodegaDto
+    public class BodegaDTO
     {
-        public int BodegaID { get; set; }
-
-        public string? BodNombre { get; set; }
-
-        public string? BodDir { get; set; }
-
-        public string? BodTel { get; set; }
-
-        public string? EstadoDesc { get; set; }
-
-        public DateTime? FecHoraReg { get; set; }
-
-        public DateTime? FecHoraAct { get; set; }
-
-        public string? SucursalDescrip { get; set; }
+        public int BodegaId { get; set; }
+        public string? BodegaNombre { get; set; }
+        public string? BodegaDireccion { get; set; }
+        public string? BodegaTelefono { get; set; }
+        public int? SucursalId { get; set; }
+        public string? SucursalDescripcion { get; set; }
+        public int? EstadoId { get; set; }
+        public string? EstadoDescripcion { get; set; }
+        public DateTime? FechaHoraReg { get; set; }
+        public int? UsuIdReg { get; set; }
+        public string? UsuRegName { get; set; }
     }
 }
