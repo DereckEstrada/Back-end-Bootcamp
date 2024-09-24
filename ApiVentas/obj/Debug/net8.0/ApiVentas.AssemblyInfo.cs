@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiVentas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d382b6e3a3280441e8a19610a00c4cc0925d87f7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9564ec11b3c9efb6ddb7dcd15e75a11a4f18fe5f")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiVentas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiVentas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -283,7 +283,7 @@ public partial class BaseErpContext : DbContext
                 .HasNoKey()
                 .ToView("Dashboard");
 
-            entity.Property(e => e.DiferenciaStock).HasColumnName("diferencia_stock");
+            entity.Property(e => e.CantidadStock).HasColumnName("cantidadStock");
             entity.Property(e => e.TotalDia)
                 .HasColumnType("decimal(38, 2)")
                 .HasColumnName("total_dia");

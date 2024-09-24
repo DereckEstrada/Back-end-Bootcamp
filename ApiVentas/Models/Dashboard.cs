@@ -9,5 +9,5 @@ public partial class Dashboard
 
     public int? TotalMovimientos { get; set; }
 
-    public int? DiferenciaStock { get; set; }
+    public int? CantidadStock { get; set; }
 }
