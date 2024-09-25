@@ -30,7 +30,7 @@ namespace ApiVentas.Controllers
             catch (Exception ex)
             {
                 Log.LogErrorMetodos(this.GetType().Name, "GetDashboard", ex.Message);
-                result.Code = "400";
+                    result.Code = "400";
                 result.Message = "Se ha presentado un exception por favor comunicarse con sistemas";
             }
             return result;

@@ -38,7 +38,7 @@ namespace ApiVentas.Services
                                                 ClienteApellido2 = cliente.ClienteApellido2,
                                                 ClienteEmail = cliente.ClienteEmail,
                                                 ClienteTelefono = cliente.ClienteTelefono,
-                                                ClienteDireccion = cliente.ClienteTelefono,
+                                                ClienteDireccion = cliente.ClienteDireccion,
                                                 EstadoId = cliente.EstadoId,
                                                 EstadoDescripcion = cliente.Estado.EstadoDescrip,
                                                 FechaHoraReg = cliente.FechaHoraReg,

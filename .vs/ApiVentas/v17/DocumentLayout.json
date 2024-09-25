@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\services\\clienteservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\services\\clienteservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -25,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\interfaces\\idashboardservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\interfaces\\idashboardservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\services\\clienteservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|solutionrelative:apiventas\\services\\clienteservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3458F0DE-8F33-46CD-8BAB-47367A90AD4B}|ApiVentas\\ApiVentas.csproj|c:\\users\\derec\\onedrive\\documents\\bootcamp\\.netcore\\bootcamp\\apiventas\\services\\stockservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -82,7 +82,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -94,20 +94,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "DashboardController.cs",
               "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\DashboardController.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Controllers\\DashboardController.cs",
-              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\DashboardController.cs",
-              "RelativeToolTip": "ApiVentas\\Controllers\\DashboardController.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAAABcAAAAJAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\DashboardController.cs*",
+              "RelativeToolTip": "ApiVentas\\Controllers\\DashboardController.cs*",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAACAAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-23T03:13:40.639Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Dashboard.cs",
               "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Models\\Dashboard.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Models\\Dashboard.cs",
@@ -119,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "IDashboardServices.cs",
               "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Interfaces\\IDashboardServices.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Interfaces\\IDashboardServices.cs",
@@ -131,7 +131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "DashboardServices.cs",
               "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Services\\DashboardServices.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Services\\DashboardServices.cs",
@@ -143,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "BaseErpContext.cs",
               "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Models\\BaseErpContext.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Models\\BaseErpContext.cs",
@@ -151,8 +151,7 @@
               "RelativeToolTip": "ApiVentas\\Models\\BaseErpContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-23T03:06:36.353Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-23T03:06:36.353Z"
             },
             {
               "$type": "Document",
@@ -192,15 +191,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "ClienteServices.cs",
               "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Services\\ClienteServices.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Services\\ClienteServices.cs",
               "ToolTip": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Services\\ClienteServices.cs",
               "RelativeToolTip": "ApiVentas\\Services\\ClienteServices.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAAADsAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAAACoAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T04:07:46.128Z"
+              "WhenOpened": "2024-09-21T04:07:46.128Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -216,7 +216,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "BodegaController.cs",
               "DocumentMoniker": "C:\\Users\\derec\\OneDrive\\Documents\\Bootcamp\\.NetCore\\BootCamp\\ApiVentas\\Controllers\\BodegaController.cs",
               "RelativeDocumentMoniker": "ApiVentas\\Controllers\\BodegaController.cs",
